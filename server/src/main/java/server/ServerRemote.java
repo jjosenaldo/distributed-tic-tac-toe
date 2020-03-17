@@ -8,7 +8,9 @@ package server;
 import rmi_interface.ServerRemoteI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import rmi_interface.ClientRemoteI;
 import tictactoe.Board;
+import tictactoe.PlayerChoice;
 import tictactoe.Square;
 import tictactoe.SquareCode;
 
@@ -23,14 +25,17 @@ public class ServerRemote extends UnicastRemoteObject implements ServerRemoteI{
     
     @Override
     public Square[][] getSquares() throws RemoteException {
-        Square[][] ret = Board.getInstance().getSquares();
-        Server.getInstance().end();
-        return ret;
+        return Board.getInstance().getSquares();
     }
 
     @Override
     public SquareCode setSquareAt(int i, int j, Square s) throws RemoteException {
         return Board.getInstance().setSquareAt(i,j,s);
+    }
+    
+    @Override
+    public PlayerChoice register(ClientRemoteI client) throws RemoteException{
+        return Server.getInstance().register(client);
     }
 
 }

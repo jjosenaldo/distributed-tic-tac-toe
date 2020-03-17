@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rmi_interface.ServerRemoteI;
+import tictactoe.PlayerChoice;
 import tictactoe.Square;
 
 /**
@@ -31,12 +32,29 @@ public class Client {
         
     }
     
-    public void execute(){
+    public void run(){
         try {
-            Square[][] board = server.getSquares();
-            System.out.println(Arrays.toString(board[0]));
-            System.out.println(Arrays.toString(board[1]));
-            System.out.println(Arrays.toString(board[2]));
+            PlayerChoice choice = server.register(new ClientRemote());
+            switch(choice){
+                case UNAVAILABLE:{
+                    System.out.println("There are already two clients connected!");return;
+                } 
+                case CROSS:{
+                    System.err.println("You'll be playing as cross!");
+                    break;
+                }
+                case CIRCLE:{
+                    System.err.println("You'll be playing as circle!");
+                    break;
+                }
+            }
+            
+//            
+//            
+//            Square[][] board = server.getSquares();
+//            System.out.println(Arrays.toString(board[0]));
+//            System.out.println(Arrays.toString(board[1]));
+//            System.out.println(Arrays.toString(board[2]));
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
