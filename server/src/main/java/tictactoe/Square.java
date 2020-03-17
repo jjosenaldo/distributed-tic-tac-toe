@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package tictactoe;
 
 /**
  *
  * @author satan
  */
-public class ServerMain {
-    public static void main(String[] args){
-        Server.getInstance().init();
-    }
-}
+public enum Square{
+    CROSS,
+    CIRCLE,
+    EMPTY
+};

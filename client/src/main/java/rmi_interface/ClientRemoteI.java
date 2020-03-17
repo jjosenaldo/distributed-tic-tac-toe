@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package rmi_interface;
+
+import java.rmi.Remote;
 
 /**
  *
  * @author satan
  */
-public class ClientMain {
-	public static void main(String[] args) {
-            Client.execute();
-
-	}
-
+public interface ClientRemoteI extends Remote{
+    
 }

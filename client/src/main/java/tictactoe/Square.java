@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfac;
-
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+package tictactoe;
 
 /**
  *
  * @author satan
  */
-public interface HelloWorldI extends Remote {
-
-    public String hello(String name) throws RemoteException;
-
-}
+public enum Square{
+    CROSS,
+    CIRCLE,
+    EMPTY
+};

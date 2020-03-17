@@ -6,10 +6,13 @@
 package server;
 
 import java.net.MalformedURLException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,8 +23,10 @@ import java.util.logging.Logger;
  */
 public class Server {
     private final int SHUTDOWN_DELAY_TIME_MS = 2000;
-    private UnicastRemoteObject remoteObj;
+    private final String NAME = "Server";
+    private ServerRemote remoteServerObj;
     private static Server instance = null;
+    private Registry registry;
     
     public static Server getInstance(){
         if(instance == null)
@@ -31,12 +36,16 @@ public class Server {
     
     public void init(){
         try {            
-            remoteObj = new HelloWorldImp();
-            Naming.rebind("//localhost/MyServer", remoteObj);
-        } catch (MalformedURLException | RemoteException ex) {
+            remoteServerObj = new ServerRemote();
+            registry = LocateRegistry.createRegistry(1099);
+            
+            // The exportObject() function isn't needed since ServerRemote extends UnicastRemoteObject
+            registry.bind(NAME, remoteServerObj);
+            System.out.println("Server ready!");
+            
+        } catch (RemoteException | AlreadyBoundException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.err.println("Server ready");
     }
     
     public void end(){
@@ -50,15 +59,13 @@ public class Server {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
-                    Naming.unbind("//localhost/MyServer");
-                } catch (RemoteException | NotBoundException | MalformedURLException ex) {
+                    registry.unbind(NAME);
+                    UnicastRemoteObject.unexportObject(remoteServerObj, true);
+                    UnicastRemoteObject.unexportObject(registry, true);
+                } catch (RemoteException | NotBoundException  ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                try {
-                    UnicastRemoteObject.unexportObject(remoteObj, true);
-                } catch (NoSuchObjectException ex) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
                 System.exit(0);
             }
 
