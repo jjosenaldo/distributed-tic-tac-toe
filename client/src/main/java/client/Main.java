@@ -5,15 +5,26 @@
  */
 package client;
 
+import java.rmi.RemoteException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rmi_interface.ServerRemoteI;
+import tictactoe.SquareCode;
+
 /**
  *
  * @author satan
  */
 public class Main {
 	public static void main(String[] args) {
-            Client client = new Client();
-            client.run();
-
+            ClientConnection clientConn = ClientConnection.getInstance();
+            ServerRemoteI server = clientConn.getServer();
+            clientConn.init();
+            Player player = Player.getInstance();
+            
+            if(!player.register())
+                System.exit(0);
 	}
 
 }

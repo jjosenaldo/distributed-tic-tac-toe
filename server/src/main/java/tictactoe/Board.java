@@ -30,9 +30,16 @@ public class Board {
         return squares;
     }
     
-    public SquareCode setSquareAt(int i, int j, Square s){
-        if(i < 0 || j < 0 || i > 2 || j > 2)
+    public boolean isFull(){
+        for(int i = 0; i < 3; ++i)for(int j = 0; j < 3; ++j)if(squares[i][j] == Square.EMPTY)return false;
+        return true;
+    }
+    
+    public SquareCode setSquareAt(int i, int j, PlayerChoice choice){
+        if(i < 0 || j < 0 || i > 2 || j > 2 || choice == PlayerChoice.UNAVAILABLE)
             return SquareCode.INVALID;
+        
+        Square s = choice == PlayerChoice.CIRCLE ? Square.CIRCLE : Square.CROSS;
         
         switch (squares[i][j]) {
             case CROSS: {

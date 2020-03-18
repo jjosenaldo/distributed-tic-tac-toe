@@ -27,8 +27,18 @@ public class Server {
     }
     
     public PlayerChoice register(ClientRemoteI client){
-        if(clientCross == null) {clientCross = client;return PlayerChoice.CROSS;}
-        if(clientCircle == null) {clientCircle = client;return PlayerChoice.CIRCLE;}
-        return PlayerChoice.UNAVAILABLE;
+        PlayerChoice ret = PlayerChoice.UNAVAILABLE;
+        if(clientCross == null) {clientCross = client;ret = PlayerChoice.CROSS;}
+        if(clientCircle == null) {clientCircle = client;ret = PlayerChoice.CIRCLE;}
+        
+        if(clientCross != null && clientCircle != null){
+            mainLoop();
+        }
+        
+        return ret;
+    }
+    
+    void mainLoop(){
+        
     }
 }
