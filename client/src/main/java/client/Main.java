@@ -5,13 +5,6 @@
  */
 package client;
 
-import java.rmi.RemoteException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import rmi_interface.ServerRemoteI;
-import tictactoe.SquareCode;
-
 /**
  *
  * @author satan
@@ -19,7 +12,6 @@ import tictactoe.SquareCode;
 public class Main {
 	public static void main(String[] args) {
             ClientConnection clientConn = ClientConnection.getInstance();
-            ServerRemoteI server = clientConn.getServer();
             clientConn.init();
             Player player = Player.getInstance();
             
