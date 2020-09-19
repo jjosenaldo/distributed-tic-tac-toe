@@ -1,0 +1,152 @@
+
+// Geral
+public interface ITicTacToeServer extends Remote {
+    public Future<GameInfo> initGame(String username) throws RemoteException;
+    public Future<GameInfo> playRound(int line, int col) throws RemoteException;
+}
+
+public enum GameState {
+    WIN,
+    LOSE,
+    DRAW,
+    RUNNING
+}
+
+public class GameInfo{
+    String playerX;
+    String playerO;
+    String curr
+    GameState state;
+    char[][] field;
+}
+
+// Server
+public class TicTacToe{
+    char[][] board;
+    String p1, p2, currP;
+    
+    void putXat(int row, int col){
+        board[row][col] = 'x';
+    }
+    
+    void putOat(int row, int col){
+        board[row][col] = 'o';
+    }
+    
+    boolean isEmpty(int row, int col){
+        return board[row][col] != 'x' && board[row][col] != 'x';
+    }
+}
+
+public class TicTacToeServer extends UnicastRemote implements ITicTacToeServer {
+    private TicTacToe ticTacToe;
+    
+    public TicTacToeServer() throws RemoteException {
+        super();
+        this.ticTaeToe = new TicTacToe();
+    }
+    
+    public Future<GameInfo> initGame(String username) throws RemoteException {
+        // verificar se não tem client com mesmo nome
+            // Sim: Inicia um novo jogo e retorna o GameInfo inicial
+            // Não: Retorna um GameInfo null
+    }
+    
+    public Future<GameInfo> playRound(int line, int col) throws RemoteException {
+        // verifica se parâmetros são válidos
+            // Não: retorna GameInfo null
+        // joga
+        // Se jogo acabou, elimine os clientes
+        // retorna GameInfo atualizado
+    }
+}
+
+public class ServerMain {
+    public static void main(String[] args) throws RemoteException, MalformedURLException {
+        System.setProperty("java.rmi.server.hostname","127.0.0.1");
+        ITicTacToeServer server = new TicTacToeServer();
+        LocateRegistry.createRegistry(1099);
+        Naming.rebind("rmi://127.0.0.1:1099/TicTacToeServer", server);
+        System.out.println("Server Starterd.");
+    }
+}
+
+// Client
+public interface ITicTacToeClient{
+     // bloqueante
+     Future<Void> requestPlay();
+     void win();
+     void lose();
+}
+
+public class TicTacToeClient{
+    ITicTacToeServer server;
+    GameInfo gameInfo;
+    String username;
+    
+    TicTacToeClient(ITicTacToeServer server){
+        this.server = server;
+    }
+    
+    boolean connectToServer(String username){
+        this.username = username;
+        this.gameInfo = server.initGame(username); //bloqueia
+        return this.gameInfo != null;
+    }
+    
+    void playRound(int row, int col){ 
+        this.gameInfo = server.playRound(row, col); //bloqueia 
+    }
+    
+    GameInfo getGameInfo(){
+        return gameInfo;
+    }
+}
+
+public class ClientMain {
+    // args[0] eh o nickname do cliente
+    public static void main(String[] args){
+        TicTacToeClient client = new TicTacToeClient(
+            (ITicTacToeServer) Naming.lookup("rmi://127.0.0.1:1099/HelloServer")
+        );
+        boolean connectionResult = client.connectToServer(args[0]); // bloqueia
+        
+        if(!connectionResult){
+             return;
+        }
+        
+        UI.initGame();
+        
+        // main loop
+        while(true){
+            GameState gameState = client.getGameInfo().getState();
+            
+            if(gameState == GameState.WIN){
+                UI.gameWin();
+                break;            
+            } else if(gameState == GameState.LOSE){
+                UI.gameLose();
+                break;
+            } else if(gameState == GameState.DRAW){
+                UI.gameDraw();
+                break;
+            } else if(gameState == GameState.RUNNING){
+                while(true){
+                    int[] play = UI.askPlay();
+                    if(/* a jogada eh valida */){
+                        UI.wait();
+                        client.playRound(play[0],play[1]);
+                        break;
+                    } else{
+                        UI.
+                    }
+                }
+                
+                
+                    
+            } else{
+                return;
+            }
+        }    
+    }
+}
