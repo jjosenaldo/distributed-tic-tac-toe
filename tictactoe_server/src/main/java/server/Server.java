@@ -71,13 +71,17 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 } else if(winnerLabel.isEmpty()){
                     gameStatus = GameStatusAfterPlay.DRAW;
                     
-                    endGame();
+                    new Thread(() -> {
+                        endGame();
+                    }).start(); 
                 } else{
                     boolean youWon = winnerLabel.equals(clients.get(clientId).getLabel());
                     
                     gameStatus = youWon ? GameStatusAfterPlay.PLAYER_WON : GameStatusAfterPlay.PLAYER_LOST;
                     
-                    endGame();
+                    new Thread(() -> {
+                        endGame();
+                    }).start(); 
                 }
                 
                 otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
