@@ -15,7 +15,7 @@ public class ServerMain {
     public static void main(String[] args){
         System.setProperty("java.rmi.server.hostname", ADDRESS);
 		
-        Server server;
+        ITicTacToeServer server;
         try {
             server = new Server();
             LocateRegistry.createRegistry(PORT);
