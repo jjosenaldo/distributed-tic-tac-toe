@@ -1,7 +1,7 @@
 package client;
 
 import model.GameStartInfo;
-import model.GameStatus;
+import model.GameStatusAfterPlay;
 import model.TicTacToe;
 
 public interface ITicTacToeClient {
@@ -18,5 +18,5 @@ public interface ITicTacToeClient {
      * @param col
      * @param gameStatus the status of the game after the other player's move
      */
-    void otherPlayerPlay(int row, int col, GameStatus gameStatus);
+    void otherPlayerPlay(int row, int col, GameStatusAfterPlay gameStatus);
 }

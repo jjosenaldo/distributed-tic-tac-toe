@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ClientInfo;
 import model.GameStartInfo;
-import model.GameStatus;
+import model.GameStatusAfterPlay;
 import model.TicTacToe;
 
 public class Server extends UnicastRemoteObject implements ITicTacToeServer{
@@ -48,13 +48,13 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         return clientId;
     }
     
-    private int getOtherPlayerId(int clientId){
-        return 1-clientId;
-    }
-    
     @Override
-    public Boolean play(Integer row, Integer col, Integer clientId) {
-        if(clients.containsKey(clientId) && currentPlayer != null && currentPlayer.equals(clientId)){
+    public GameStatusAfterPlay play(Integer row, Integer col, Integer clientId) {
+        if(!clients.containsKey(clientId)){
+            return null;
+        } else if(currentPlayer == null || !currentPlayer.equals(clientId)){
+            return GameStatusAfterPlay.NOT_YOUR_TURN;
+        } else{
             boolean validPlay = ticTacToe.applyPlayIfValid(row, col, clients.get(clientId).getLabel());
             
             if(validPlay){
@@ -62,36 +62,35 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 ITicTacToeClient otherPlayerInstance = clients.get(otherPlayerId).getRemoteInstance();
             
                 String winnerLabel = ticTacToe.getWinnerLabelIfGameHasEnded();
-                GameStatus gameStatus;
+                GameStatusAfterPlay gameStatus;
                 
                 if(winnerLabel == null){
-                    gameStatus = GameStatus.RUNNNING;
-                    
-                    otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                    gameStatus = GameStatusAfterPlay.RUNNNING;
                     
                     changeCurrentPlayer(otherPlayerId);
-                }
-                else if(winnerLabel.isEmpty()){
-                    gameStatus = GameStatus.DRAW;
-                    // TODO
+                } else if(winnerLabel.isEmpty()){
+                    gameStatus = GameStatusAfterPlay.DRAW;
+                    
+                    endGame();
                 } else{
-                    // gameStatus = GameStatus.YOU_WON or gameStatus = GameStatus.YOU_LOST;
-                    // TODO
+                    boolean youWon = winnerLabel.equals(clients.get(clientId).getLabel());
+                    
+                    gameStatus = youWon ? GameStatusAfterPlay.YOU_WON : GameStatusAfterPlay.YOU_LOST;
+                    
+                    endGame();
                 }
                 
-                return true;
+                otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                return gameStatus;
             } else{
-                return false;
+                return GameStatusAfterPlay.INVALID_PLAY;
             }
-            
-        } else{
-            return null;
-        }
+        }   
     }
     
-    private void changeCurrentPlayer(int otherPlayerId){
-        currentPlayer = otherPlayerId;
-    }   
+    private void endGame(){
+        throw new UnsupportedOperationException("TODO");
+    }
     
     private void startGame() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -127,6 +126,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     private void gameLoop(){
         currentPlayer = getFirstPlayerId();
         
+        // TODO: what should happen here?
         while(true){}
     }
     
@@ -152,5 +152,13 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         } else{
             return clients.size();
         }
+    }
+    
+     private void changeCurrentPlayer(int otherPlayerId){
+        currentPlayer = otherPlayerId;
+    }
+     
+    private int getOtherPlayerId(int clientId){
+        return 1-clientId;
     }
 }

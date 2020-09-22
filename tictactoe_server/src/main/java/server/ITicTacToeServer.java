@@ -3,6 +3,7 @@ package server;
 import client.ITicTacToeClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import model.GameStatusAfterPlay;
 
 public interface ITicTacToeServer extends Remote{
     /**
@@ -16,15 +17,13 @@ public interface ITicTacToeServer extends Remote{
      */
     Integer registerClient(ITicTacToeClient client, String username) throws RemoteException;
     
-    // TODO: maybe this method should return a GameStatus object
     /**
      * 
      * @param col
      * @param row
      * @param clientId
-     * @return null if the client is not on their turn, 
-     *         false if the client was on their turn, but the play was invalid,
-     *         true if the play was successful
+     * @return null if the client is not playing,
+     *         the status of the game after the player's play, otherwise
      */
-    Boolean play(Integer col, Integer row, Integer clientId);
+    GameStatusAfterPlay play(Integer col, Integer row, Integer clientId);
 }
