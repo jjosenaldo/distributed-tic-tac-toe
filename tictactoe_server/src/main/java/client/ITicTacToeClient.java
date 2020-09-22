@@ -1,8 +1,8 @@
 package client;
 
-import model.GameInfo;
+import model.GameStartInfo;
 import model.TicTacToe;
 
 public interface ITicTacToeClient {
-    void startGame(GameInfo info, TicTacToe board);
+    void startGame(GameStartInfo info, TicTacToe board);
 }

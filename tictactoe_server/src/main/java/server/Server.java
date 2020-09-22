@@ -3,13 +3,16 @@ package server;
 import client.ITicTacToeClient;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ClientInfo;
-import model.GameInfo;
+import model.GameStartInfo;
 import model.TicTacToe;
 
 public class Server extends UnicastRemoteObject implements ITicTacToeServer{
@@ -81,26 +84,26 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     
     private void startGame() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
+        List<Entry<Integer, ClientInfo>> clientList = new ArrayList<>(clients.entrySet());
         
-        // Calls the startGame() method in each client
-        clients.forEach((clientId, clientInfo) -> {
-            String otherPlayerUsername;
-
-            if(clientId == 0){
-                otherPlayerUsername = clients.get(1).getUsername();
-            } else{
-                otherPlayerUsername = clients.get(0).getUsername();
-            }
+        for(int i = 0; i < clientList.size(); ++i){
+            Integer clientId = clientList.get(i).getKey();
+            ClientInfo clientInfo = clientList.get(i).getValue();
+            ClientInfo otherClientInfo = clientList.get(1-i).getValue();
             
+            // Builds GameStartInfo object for the current client in the loop
+            String otherPlayerUsername = otherClientInfo.getUsername();
+            String otherPlayerLabel = otherClientInfo.getLabel();
             boolean youStart = clientId == getFirstPlayerId();
+
+            GameStartInfo gameInfo = new GameStartInfo(clientInfo.getLabel(), youStart, otherPlayerUsername, otherPlayerLabel);
             
-            GameInfo gameInfo = new GameInfo(otherPlayerUsername,youStart, clientInfo.getLabel());
-            
+            // Calls the startGame() method in the current client's instance (in another thread)
             new Thread(() -> {
                 clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe);
                 countDownLatch.countDown();
             }).start(); 
-        });
+        }
         
         try {
             countDownLatch.await();
