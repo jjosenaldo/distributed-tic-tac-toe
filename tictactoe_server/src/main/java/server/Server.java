@@ -22,12 +22,15 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     private TicTacToe ticTacToe;
     
     public Server() throws RemoteException {
+        super();
         clients = new HashMap<>();
         currentPlayer = null;
     }
 
     @Override
     public Integer registerClient(ITicTacToeClient remoteInstance, String username) throws RemoteException {
+        System.out.println("ola " + username);
+        remoteInstance.startGame(null, null);
         // TODO: check if the username is already being used, and if it is, return null
         // TODO: if the game is running, this method should return null
         

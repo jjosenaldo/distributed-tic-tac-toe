@@ -5,3 +5,5 @@ pom.xml
 *.class
 server/target/
 client/target/
+/tictactoe_server/target/
+/tictactoe_client/target/

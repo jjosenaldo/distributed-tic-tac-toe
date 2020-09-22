@@ -21,7 +21,7 @@ public class ServerMain {
         try {
             server = new Server();
             LocateRegistry.createRegistry(PORT);
-            Naming.rebind("rmi://" + ADDRESS + ":" + String.valueOf(PORT)+"/"+OBJECT_NAME, server);
+            Naming.rebind("rmi://" + ADDRESS + ":" + PORT +"/"+OBJECT_NAME, server);
             System.out.println("RMI server started");
         } catch (RemoteException | MalformedURLException ex) {
             Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
