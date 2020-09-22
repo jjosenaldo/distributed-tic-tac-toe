@@ -125,17 +125,10 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         
         try {
             countDownLatch.await();
-            gameLoop();
+            currentPlayer = getFirstPlayerId();
         } catch (InterruptedException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    private void gameLoop(){
-        currentPlayer = getFirstPlayerId();
-        
-        // TODO: what should happen here?
-        while(true){}
     }
     
     private void endGame(){
