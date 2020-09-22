@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ClientInfo;
 import model.GameStartInfo;
+import model.GameStatus;
 import model.TicTacToe;
 
 public class Server extends UnicastRemoteObject implements ITicTacToeServer{
@@ -47,21 +48,34 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         return clientId;
     }
     
+    private int getOtherPlayerId(int clientId){
+        return 1-clientId;
+    }
+    
     @Override
     public Boolean play(Integer row, Integer col, Integer clientId) {
         if(clients.containsKey(clientId) && currentPlayer != null && currentPlayer.equals(clientId)){
             boolean validPlay = ticTacToe.applyPlayIfValid(row, col, clients.get(clientId).getLabel());
             
             if(validPlay){
+                int otherPlayerId = getOtherPlayerId(clientId);
+                ITicTacToeClient otherPlayerInstance = clients.get(otherPlayerId).getRemoteInstance();
+            
                 String winnerLabel = ticTacToe.getWinnerLabelIfGameHasEnded();
+                GameStatus gameStatus;
                 
                 if(winnerLabel == null){
-                    // TODO
-                    // it has to call the changeCurrentPlayer() method
+                    gameStatus = GameStatus.RUNNNING;
+                    
+                    otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                    
+                    changeCurrentPlayer(otherPlayerId);
                 }
                 else if(winnerLabel.isEmpty()){
+                    gameStatus = GameStatus.DRAW;
                     // TODO
                 } else{
+                    // gameStatus = GameStatus.YOU_WON or gameStatus = GameStatus.YOU_LOST;
                     // TODO
                 }
                 
@@ -75,12 +89,8 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         }
     }
     
-    private void changeCurrentPlayer(){
-        currentPlayer = clients.entrySet()
-                .stream()
-                .filter(entry -> !entry.getKey().equals(currentPlayer))
-                .findFirst()
-                .get().getKey();
+    private void changeCurrentPlayer(int otherPlayerId){
+        currentPlayer = otherPlayerId;
     }   
     
     private void startGame() {
