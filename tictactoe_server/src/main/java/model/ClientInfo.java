@@ -21,4 +21,8 @@ public class ClientInfo {
     public String getUsername(){
         return username;
     }
+    
+    public String getLabel(){
+        return label;
+    }
 }
