@@ -25,7 +25,8 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     @Override
     public Integer registerClient(ITicTacToeClient remoteInstance, String username) throws RemoteException {
         // TODO: check if the username is already being used, and if it is, return null
-                
+        // TODO: if the game is running, this method should return null
+        
         Integer clientId = generateClientId();
         
         if(clientId != null){
@@ -91,12 +92,12 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 otherPlayerUsername = clients.get(0).getUsername();
             }
             
-            boolean yourTurn = clientId == getFirstPlayerId();
+            boolean youStart = clientId == getFirstPlayerId();
             
-            GameInfo gameInfo = new GameInfo(otherPlayerUsername);
+            GameInfo gameInfo = new GameInfo(otherPlayerUsername,youStart, clientInfo.getLabel());
             
             new Thread(() -> {
-                clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe, yourTurn);
+                clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe);
                 countDownLatch.countDown();
             }).start(); 
         });
