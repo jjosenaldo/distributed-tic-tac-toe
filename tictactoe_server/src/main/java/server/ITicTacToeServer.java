@@ -16,6 +16,7 @@ public interface ITicTacToeServer extends Remote{
      */
     Integer registerClient(ITicTacToeClient client, String username) throws RemoteException;
     
+    // TODO: maybe this method should return a GameStatus object
     /**
      * 
      * @param col
