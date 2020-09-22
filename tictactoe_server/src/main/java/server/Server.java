@@ -84,16 +84,16 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                     }).start(); 
                 }
                 
-                otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                try {
+                    otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return gameStatus;
             } else{
                 return GameStatusAfterPlay.INVALID_PLAY;
             }
         }   
-    }
-    
-    private void endGame(){
-        throw new UnsupportedOperationException("TODO");
     }
     
     private void startGame() {
@@ -114,7 +114,11 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
             
             // Calls the startGame() method in the current client's instance (in another thread)
             new Thread(() -> {
-                clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe);
+                try {
+                    clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 countDownLatch.countDown();
             }).start(); 
         }
@@ -132,6 +136,10 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         
         // TODO: what should happen here?
         while(true){}
+    }
+    
+    private void endGame(){
+        throw new UnsupportedOperationException("TODO");
     }
     
     private int getFirstPlayerId(){
