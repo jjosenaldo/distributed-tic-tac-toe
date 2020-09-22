@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.ITicTacToeServer;
@@ -19,7 +20,8 @@ public class ClientMain {
         try {
             ITicTacToeClient client = new Client();
             ITicTacToeServer server = (ITicTacToeServer) Naming.lookup("rmi://" + ADDRESS + ":" + PORT +"/"+OBJECT_NAME);
-            server.registerClient(client, "Gilney");
+            String username = new Scanner(System.in).next();
+            server.registerClient(client, username);
         } catch (RemoteException | NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ClientMain.class.getName()).log(Level.SEVERE, null, ex);
         }

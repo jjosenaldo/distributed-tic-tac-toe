@@ -1,6 +1,8 @@
 package model;
 
-public class GameStartInfo {
+import java.io.Serializable;
+
+public class GameStartInfo implements Serializable {
     private final String otherPlayerLabel;
     private final String otherPlayerUsername;
     private final boolean youStart;
