@@ -22,5 +22,5 @@ public interface ITicTacToeClient extends Remote {
      * @param gameStatus the status of the game after the other player's move
      * @throws java.rmi.RemoteException
      */
-    void otherPlayerPlay(int row, int col, GameStatusAfterPlay gameStatus) throws RemoteException;
+    void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus) throws RemoteException;
 }

@@ -85,7 +85,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 }
                 
                 try {
-                    otherPlayerInstance.otherPlayerPlay(row, col, gameStatus);
+                    otherPlayerInstance.otherPlayerPlayed(row, col, gameStatus);
                 } catch (RemoteException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
