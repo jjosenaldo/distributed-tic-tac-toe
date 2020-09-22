@@ -57,6 +57,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 
                 if(winnerLabel == null){
                     // TODO
+                    // it has to call the changeCurrentPlayer() method
                 }
                 else if(winnerLabel.isEmpty()){
                     // TODO
