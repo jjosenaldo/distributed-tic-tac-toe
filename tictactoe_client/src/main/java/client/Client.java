@@ -15,13 +15,20 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient{
         super();
     }
 
+    // TODO
     @Override
     public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException {
         System.out.println("startGame()");
     }
 
+    // TODO
     @Override
-    public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus) throws RemoteException {
+    public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException {
         System.out.println("otherPlayerPlayed(): " + row + " " +  col + " " + gameStatus);
+    }
+    
+    // TODO
+    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates){
+        System.out.println("playStatus()");
     }
 }

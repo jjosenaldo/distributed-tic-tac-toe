@@ -13,7 +13,7 @@ public interface ITicTacToeClient extends Remote {
      * @param board 
      * @throws java.rmi.RemoteException 
      */
-    void startGame(GameStartInfo info, TicTacToe board) throws RemoteException;
+    public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException;
     
     /**
      * Gives this player the information about the other player's move.
@@ -22,5 +22,7 @@ public interface ITicTacToeClient extends Remote {
      * @param gameStatus the status of the game after the other player's move
      * @throws java.rmi.RemoteException
      */
-    void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus) throws RemoteException;
+    public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException;
+    
+    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates);
 }

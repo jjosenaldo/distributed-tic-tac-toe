@@ -3,7 +3,6 @@ package server;
 import client.ITicTacToeClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import model.GameStatusAfterPlay;
 
 public interface ITicTacToeServer extends Remote{
     /**
@@ -15,7 +14,7 @@ public interface ITicTacToeServer extends Remote{
      *         null otherwise
      * @throws RemoteException 
      */
-    Integer registerClient(ITicTacToeClient client, String username) throws RemoteException;
+    public Integer registerClient(ITicTacToeClient client, String username) throws RemoteException;
     
     /**
      * 
@@ -26,5 +25,5 @@ public interface ITicTacToeServer extends Remote{
      *         the status of the game after the player's play, otherwise
      * @throws java.rmi.RemoteException
      */
-    GameStatusAfterPlay play(Integer row, Integer col, Integer clientId) throws RemoteException;
+    public void play(Integer row, Integer col, Integer clientId) throws RemoteException;
 }

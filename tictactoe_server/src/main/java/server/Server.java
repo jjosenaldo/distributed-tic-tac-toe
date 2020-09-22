@@ -52,11 +52,11 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     }
     
     @Override
-    public GameStatusAfterPlay play(Integer row, Integer col, Integer clientId) {
+    public void play(Integer row, Integer col, Integer clientId) {
         if(!clients.containsKey(clientId)){
-            return null;
+
         } else if(currentPlayer == null || !currentPlayer.equals(clientId)){
-            return GameStatusAfterPlay.NOT_YOUR_TURN;
+            clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.NOT_YOUR_TURN, null);
         } else{
             boolean validPlay = ticTacToe.applyPlayIfValid(row, col, clients.get(clientId).getLabel());
             
@@ -66,6 +66,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
             
                 String winnerLabel = ticTacToe.getWinnerLabelIfGameHasEnded();
                 GameStatusAfterPlay gameStatus;
+                int[][] winCoordinates = null;
                 
                 if(winnerLabel == null){
                     gameStatus = GameStatusAfterPlay.RUNNNING;
@@ -74,27 +75,22 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                 } else if(winnerLabel.isEmpty()){
                     gameStatus = GameStatusAfterPlay.DRAW;
                     
-                    new Thread(() -> {
-                        endGame();
-                    }).start(); 
                 } else{
                     boolean youWon = winnerLabel.equals(clients.get(clientId).getLabel());
+                    winCoordinates = ticTacToe.getWinCoordinates();
                     
                     gameStatus = youWon ? GameStatusAfterPlay.PLAYER_WON : GameStatusAfterPlay.PLAYER_LOST;
-                    
-                    new Thread(() -> {
-                        endGame();
-                    }).start(); 
                 }
                 
                 try {
-                    otherPlayerInstance.otherPlayerPlayed(row, col, gameStatus);
+                    otherPlayerInstance.otherPlayerPlayed(row, col, gameStatus, winCoordinates);
                 } catch (RemoteException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return gameStatus;
+                
+                clients.get(clientId).getRemoteInstance().playStatus(gameStatus, winCoordinates);
             } else{
-                return GameStatusAfterPlay.INVALID_PLAY;
+                clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.INVALID_PLAY, null);
             }
         }   
     }
@@ -132,10 +128,6 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         } catch (InterruptedException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    private void endGame(){
-        throw new UnsupportedOperationException("TODO");
     }
     
     private int getFirstPlayerId(){

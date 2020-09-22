@@ -48,4 +48,9 @@ public class TicTacToe implements Serializable {
         // TODO:
         throw new UnsupportedOperationException("TODO");
     }
+    
+    public int[][] getWinCoordinates(){
+        // TODO
+        return null;
+    }
 }
