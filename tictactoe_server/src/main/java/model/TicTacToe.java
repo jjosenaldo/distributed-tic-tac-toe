@@ -45,12 +45,55 @@ public class TicTacToe implements Serializable {
      *         null if the game has not ended
      */
     public String getWinnerLabelIfGameHasEnded(){
-        // TODO:
-        throw new UnsupportedOperationException("TODO");
+        for(int rowOrCol = 0; rowOrCol < 3; ++rowOrCol){
+            String possibleHorizontallWinner = board[rowOrCol][0];
+            
+            if(!possibleHorizontallWinner.isEmpty()){
+                if(board[rowOrCol][1].equals(possibleHorizontallWinner) && 
+                    board[rowOrCol][2].equals(possibleHorizontallWinner)){
+                    return possibleHorizontallWinner;
+                }
+            }
+            
+            String possibleVerticalWinner = board[0][rowOrCol];
+            
+            if(!possibleVerticalWinner.isEmpty()){
+                if(board[1][rowOrCol].equals(possibleVerticalWinner) && 
+                    board[2][rowOrCol].equals(possibleVerticalWinner)){
+                    return possibleVerticalWinner;
+                }
+            }
+        }
+        
+        for(int row = 0; row < 3; ++row)
+            for(int col = 0; col < 3; ++col)
+                if(board[row][col].isEmpty())
+                    return null;
+        
+        return "";
     }
     
     public int[][] getWinCoordinates(){
-        // TODO
+        for(int rowOrCol = 0; rowOrCol < 3; ++rowOrCol){
+            String possibleHorizontallWinner = board[rowOrCol][0];
+            
+            if(!possibleHorizontallWinner.isEmpty()){
+                if(board[rowOrCol][1].equals(possibleHorizontallWinner) && 
+                    board[rowOrCol][2].equals(possibleHorizontallWinner)){
+                    return new int[][]{{rowOrCol, 0},{rowOrCol, 1},{rowOrCol, 2}};
+                }
+            }
+            
+            String possibleVerticalWinner = board[0][rowOrCol];
+            
+            if(!possibleVerticalWinner.isEmpty()){
+                if(board[1][rowOrCol].equals(possibleVerticalWinner) && 
+                    board[2][rowOrCol].equals(possibleVerticalWinner)){
+                    return new int[][]{{0, rowOrCol},{1, rowOrCol},{2, rowOrCol}};
+                }
+            }
+        }
+        
         return null;
     }
 }
