@@ -2,6 +2,7 @@ package main;
 
 import client.Client;
 import client.ITicTacToeClient;
+import gui.GUI;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -14,7 +15,8 @@ public class ClientMain {
     private static final String OBJECT_NAME = "Server";
     
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException{
+        GUI gui = null;
         ITicTacToeServer server = (ITicTacToeServer) Naming.lookup("rmi://" + ADDRESS + ":" + PORT +"/"+OBJECT_NAME);
-        ITicTacToeClient client = new Client(server);
+        ITicTacToeClient client = new Client(gui);
     }
 }
