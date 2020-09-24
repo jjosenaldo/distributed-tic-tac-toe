@@ -6,5 +6,5 @@ public enum GameStatusAfterPlay {
     PLAYER_WON,
     PLAYER_LOST,
     DRAW,
-    RUNNNING
+    RUNNING
 }

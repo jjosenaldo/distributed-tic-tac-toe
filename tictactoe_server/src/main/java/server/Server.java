@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,23 +30,20 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
 
     @Override
     public Integer registerClient(ITicTacToeClient remoteInstance, String username) throws RemoteException {
-        System.out.println("ola " + username);
-        remoteInstance.startGame(null, null);
-        // TODO: check if the username is already being used, and if it is, return null
-        // TODO: if the game is running, this method should return null
+        if(isUsernameAlreadyUsed(username) || isGameAlreadyFull()){
+            return null;
+        }
         
         Integer clientId = generateClientId();
         
-        if(clientId != null){
-            String label = generateClientLabel(clientId);
-            ClientInfo clientInfo = new ClientInfo(username, label, remoteInstance);
-            clients.put(clientId, clientInfo);
-            
-            if(shouldStartGame()){
-               new Thread(() -> {
-                    startGame();
-                }).start(); 
-            }
+        String label = generateClientLabel(clientId);
+        ClientInfo clientInfo = new ClientInfo(username, label, remoteInstance);
+        clients.put(clientId, clientInfo);
+
+        if(shouldStartGame()){
+           new Thread(() -> {
+                startGame();
+            }).start(); 
         }
                 
         return clientId;
@@ -134,6 +132,20 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         return 0;
     }
     
+    private boolean isUsernameAlreadyUsed(String username){
+        Optional<Entry<Integer, ClientInfo>> clientWithGivenUsername = 
+            clients.entrySet()
+                   .stream()
+                   .filter(entry -> entry.getValue().getUsername().equals(username))
+                   .findFirst();
+        
+        return !clientWithGivenUsername.isEmpty();
+    }
+    
+    private boolean isGameAlreadyFull(){
+        return shouldStartGame();
+    }
+    
     private boolean shouldStartGame(){
         return clients.size() == 2;
     }
@@ -147,11 +159,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
     }
     
     private Integer generateClientId(){
-        if(clients.size() == 2){
-            return null;
-        } else{
-            return clients.size();
-        }
+        return clients.size();
     }
     
      private void changeCurrentPlayer(int otherPlayerId){

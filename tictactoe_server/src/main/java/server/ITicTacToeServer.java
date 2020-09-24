@@ -21,8 +21,6 @@ public interface ITicTacToeServer extends Remote{
      * @param col
      * @param row
      * @param clientId
-     * @return null if the client is not playing,
-     *         the status of the game after the player's play, otherwise
      * @throws java.rmi.RemoteException
      */
     public void play(Integer row, Integer col, Integer clientId) throws RemoteException;

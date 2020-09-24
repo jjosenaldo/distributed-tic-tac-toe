@@ -1,34 +1,65 @@
 package client;
 
+import gui.GUI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import model.GameStartInfo;
 import model.GameStatusAfterPlay;
 import model.TicTacToe;
 
-/**
- *
- * @author satan
- */
 public class Client extends UnicastRemoteObject implements ITicTacToeClient{    
-    public Client() throws RemoteException {
+    private final GUI gui;
+    
+    public Client(GUI gui) throws RemoteException {
         super();
+        this.gui = gui;
     }
 
-    // TODO
     @Override
     public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException {
-        System.out.println("startGame()");
+        gui.showGameHomeScreen(info, board);
     }
 
-    // TODO
     @Override
     public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException {
-        System.out.println("otherPlayerPlayed(): " + row + " " +  col + " " + gameStatus);
+        gui.drawOpponentPlay(row, col);
+        
+        switch(gameStatus){
+            case RUNNING:
+                gui.goToThisPlayerTurn();
+                break;
+            case PLAYER_WON:
+                gui.finishGameWithLoss(winCoordinates);
+                break;
+            case PLAYER_LOST:
+                gui.finishGameWithWin(winCoordinates);
+                break;
+            case DRAW:
+                gui.finishGameWithDraw();
+        }
     }
     
-    // TODO
+    @Override
     public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates){
-        System.out.println("playStatus()");
+        switch(gameStatus){
+            case INVALID_PLAY:
+                gui.showInvalidPlayScreen();
+                break;
+            case NOT_YOUR_TURN:
+                gui.showNotYourTurnScreen();
+                break;
+            case PLAYER_WON:
+                gui.finishGameWithWin(winCoordinates);
+                break;
+            case PLAYER_LOST:
+                gui.finishGameWithLoss(winCoordinates);
+                break;
+            case DRAW:
+                gui.finishGameWithDraw();
+                break;
+            case RUNNING:
+                gui.waitOtherPlayerTurn();
+                break;
+        }
     }
 }
