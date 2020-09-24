@@ -10,19 +10,20 @@ import server.ITicTacToeServer;
 import server.Server;
 
 public class ServerMain {
+
     private static final String ADDRESS = "127.0.0.1";
     private static final int PORT = 1098;
     private static final String OBJECT_NAME = "Server";
-    
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         System.setProperty("java.rmi.server.hostname", ADDRESS);
-		
+
         ITicTacToeServer server;
         try {
             server = new Server();
             LocateRegistry.createRegistry(PORT);
-            Naming.rebind("rmi://" + ADDRESS + ":" + PORT +"/"+OBJECT_NAME, server);
-            System.out.println("RMI server started");
+            Naming.rebind("rmi://" + ADDRESS + ":" + PORT + "/" + OBJECT_NAME, server);
+            System.out.println("RMI server running");
         } catch (RemoteException | MalformedURLException ex) {
             Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
         }

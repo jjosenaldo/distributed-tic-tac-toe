@@ -3,6 +3,8 @@ package client;
 import gui.GUI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.GameStartInfo;
 import model.GameStatusAfterPlay;
 import model.TicTacToe;
@@ -121,8 +123,8 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
                 this.yourUsername = username;
                 return true;
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

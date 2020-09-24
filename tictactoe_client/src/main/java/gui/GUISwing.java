@@ -19,6 +19,9 @@ public class GUISwing extends JFrame implements GUI {
     private final IClientController client;
     private final JPanel homeScreen;
     private final JPanel loadingScreen;
+    private final JPanel youWonScreen;
+    private final JPanel youLostScreen;
+    private final JPanel youDrewScreen;
     private final JPanel gameScreen;
     private JLabel turnUsername;
     private final JButton[][] board;
@@ -50,7 +53,6 @@ public class GUISwing extends JFrame implements GUI {
         if (board[row][col].getText().isEmpty()) {
             drawPlay(row, col, client.getYourLabel());
             client.play(row, col);
-            updateScreen(loadingScreen);
         }
     }
 
@@ -137,10 +139,10 @@ public class GUISwing extends JFrame implements GUI {
      *
      * @return The created loadingScreen panel.
      */
-    private JPanel createLoadingScreen() {
+    private JPanel createSimpleScreenWithText(String text) {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        JLabel label = new JLabel("Loading ...");
+        JLabel label = new JLabel(text);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
@@ -198,7 +200,10 @@ public class GUISwing extends JFrame implements GUI {
         this.client = client;
         this.board = new JButton[3][3];
         this.homeScreen = createHomeScreen();
-        this.loadingScreen = createLoadingScreen();
+        this.loadingScreen = createSimpleScreenWithText("Loading");
+        this.youWonScreen = createSimpleScreenWithText("You won!");
+        this.youLostScreen = createSimpleScreenWithText("You lost!");
+        this.youDrewScreen = createSimpleScreenWithText("Draw!");
         this.gameScreen = createGameScreen();
 
         this.updateScreen(homeScreen);
@@ -234,19 +239,21 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void finishGameWithWin(int[][] winCoordinates) {
-        // TODO Auto-generated method stub
-
+        // TODO
+        updateScreen(youWonScreen);
     }
 
     @Override
     public void finishGameWithDraw() {
-        // TODO Auto-generated method stub
+        // TODO
+        updateScreen(youDrewScreen);
 
     }
 
     @Override
     public void finishGameWithLoss(int[][] winCoordinates) {
-        // TODO Auto-generated method stub
+        // TODO
+        updateScreen(youLostScreen);
 
     }
 
