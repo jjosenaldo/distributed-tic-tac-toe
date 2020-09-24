@@ -11,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import model.GameStartInfo;
-import model.TicTacToe;
 
 public class GUISwing extends JFrame implements GUI {
 
@@ -34,13 +32,12 @@ public class GUISwing extends JFrame implements GUI {
      */
     private void enterUsername(String username) {
         updateScreen(loadingScreen);
-        boolean ok = client.register(username);
+        boolean registrationOk = client.register(username);
 
-        if (!ok) {
-            // TODO: Avisar ao client que não deu certo
+        if (!registrationOk) {
+            // TODO: Show a warning screen to the player
             updateScreen(homeScreen);
         }
-        System.out.println("Registrei " + username); // TODO: Remove after
     }
 
     /**
@@ -67,7 +64,11 @@ public class GUISwing extends JFrame implements GUI {
      *
      * @param username The username to be set.
      */
-    private void setTurnUsername(String username) {
+    @Override
+    public void setTurnUsername(String username) {
+        // TODO: BUG: the Label is not updated when this method
+        // is called for the second time, i.e., when the player's
+        // username is supplied
         this.turnUsername = new JLabel(username + "'s turn");
     }
 
@@ -208,8 +209,10 @@ public class GUISwing extends JFrame implements GUI {
     }
 
     @Override
-    public void showGameHomeScreen(GameStartInfo info, TicTacToe board) {
-
+    public void showGameScreen(boolean blocked) {
+        // TODO: if "blocked" is true, the user cannot be
+        // able to interact with the game
+        updateScreen(gameScreen);
     }
 
     @Override

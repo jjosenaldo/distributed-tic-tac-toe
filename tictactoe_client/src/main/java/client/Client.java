@@ -60,10 +60,11 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
 
         if (info.youStart()) {
             // TODO
-            // gui.setYourTurn(this.yourUsername); // Habilita o tabuleiro
+            gui.setTurnUsername(yourUsername);
+            gui.showGameScreen(false);
         } else {
-            // TODO
-            // gui.setOtherPlayerTurn(this.otherPlayUsername); // Bloqueia o tabuleiro
+            gui.setTurnUsername(otherPlayerUsername);
+            gui.showGameScreen(true);
         }
         // TODO
         // gui.initGame();
