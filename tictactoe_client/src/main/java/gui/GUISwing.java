@@ -18,14 +18,14 @@ public class GUISwing extends JFrame implements GUI {
 
     private static final long serialVersionUID = -6411296905838649087L;
 
-    private IClientController client;
-    private JPanel homeScreen;
-    private JPanel loadingScreen;
-    private JPanel gameScreen;
+    private final IClientController client;
+    private final JPanel homeScreen;
+    private final JPanel loadingScreen;
+    private final JPanel gameScreen;
     private JLabel turnUsername;
-    private JButton[][] board;
-    private static int WIDTH = 400;
-    private static int HEIGHT = 600;
+    private final JButton[][] board;
+    private static final int WIDTH = 400;
+    private static final int HEIGHT = 600;
 
     /**
      * This method is called when the user enter its username in GUI.
@@ -201,10 +201,10 @@ public class GUISwing extends JFrame implements GUI {
         this.gameScreen = createGameScreen();
 
         this.updateScreen(homeScreen);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(WIDTH, HEIGHT);
-        this.setResizable(false);
-        this.setVisible(true);
+        super.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        super.setSize(WIDTH, HEIGHT);
+        super.setResizable(false);
+        super.setVisible(true);
     }
 
     @Override
