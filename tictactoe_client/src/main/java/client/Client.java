@@ -59,23 +59,21 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
         this.otherPlayerUsername = info.getOtherPlayerUsername();
 
         if (info.youStart()) {
-            // TODO
             gui.setTurnUsername(yourUsername);
             gui.showGameScreen(false);
         } else {
             gui.setTurnUsername(otherPlayerUsername);
             gui.showGameScreen(true);
         }
-        // TODO
-        // gui.initGame();
     }
 
     @Override
     public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException {
-        gui.drawOpponentPlay(row, col);
+        gui.drawPlay(row, col, otherPlayerLabel);
 
         switch (gameStatus) {
             case RUNNING:
+                gui.setTurnUsername(yourUsername);
                 gui.goToThisPlayerTurn();
                 break;
             case PLAYER_WON:
@@ -108,6 +106,7 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
                 gui.finishGameWithDraw();
                 break;
             case RUNNING:
+                gui.setTurnUsername(otherPlayerUsername);
                 gui.waitOtherPlayerTurn();
                 break;
         }

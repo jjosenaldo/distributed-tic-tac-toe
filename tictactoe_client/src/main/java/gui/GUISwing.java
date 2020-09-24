@@ -48,13 +48,13 @@ public class GUISwing extends JFrame implements GUI {
      */
     private void play(int row, int col) {
         if (board[row][col].getText().isEmpty()) {
-            // TODO: client.getLabel, set label on cell
             drawPlay(row, col, client.getYourLabel());
             client.play(row, col);
-            System.out.println("Click " + row + " " + col);
+            updateScreen(loadingScreen);
         }
     }
 
+    @Override
     public void drawPlay(int row, int col, String label) {
         board[row][col].setText(label);
     }
@@ -212,7 +212,12 @@ public class GUISwing extends JFrame implements GUI {
     public void showGameScreen(boolean blocked) {
         // TODO: if "blocked" is true, the user cannot be
         // able to interact with the game
-        updateScreen(gameScreen);
+        if (blocked) {
+            updateScreen(loadingScreen);
+        } else {
+            updateScreen(gameScreen);
+        }
+
     }
 
     @Override
@@ -223,12 +228,6 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void showNotYourTurnScreen() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void drawOpponentPlay(int row, int col) {
         // TODO Auto-generated method stub
 
     }
@@ -253,14 +252,15 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void goToThisPlayerTurn() {
-        // TODO Auto-generated method stub
+        // TODO: This method should unblock the board
+        updateScreen(gameScreen);
 
     }
 
     @Override
     public void waitOtherPlayerTurn() {
-        // TODO Auto-generated method stub
-
+        // TODO: This method should block the board
+        updateScreen(loadingScreen);
     }
 
 }

@@ -8,7 +8,7 @@ public interface GUI {
 
     public void showNotYourTurnScreen();
 
-    public void drawOpponentPlay(int row, int col);
+    public void drawPlay(int row, int col, String label);
 
     public void finishGameWithWin(int[][] winCoordinates);
 
