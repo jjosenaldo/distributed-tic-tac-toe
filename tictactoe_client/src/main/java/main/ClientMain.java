@@ -1,12 +1,13 @@
 package main;
 
-import client.Client;
-import client.ITicTacToeClient;
-import gui.GUI;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
+import client.Client;
+import client.ITicTacToeClient;
+import gui.GUI;
 import server.ITicTacToeServer;
 
 public class ClientMain {

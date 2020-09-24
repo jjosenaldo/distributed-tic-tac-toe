@@ -30,6 +30,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
 
     @Override
     public Integer registerClient(ITicTacToeClient remoteInstance, String username) throws RemoteException {
+    	System.out.println("Olá, " + username);
         if(isUsernameAlreadyUsed(username) || isGameAlreadyFull()){
             return null;
         }
@@ -54,7 +55,12 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
         if(!clients.containsKey(clientId)){
 
         } else if(currentPlayer == null || !currentPlayer.equals(clientId)){
-            clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.NOT_YOUR_TURN, null);
+            try {
+				clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.NOT_YOUR_TURN, null);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         } else{
             boolean validPlay = ticTacToe.applyPlayIfValid(row, col, clients.get(clientId).getLabel());
             
@@ -86,9 +92,19 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                clients.get(clientId).getRemoteInstance().playStatus(gameStatus, winCoordinates);
+                try {
+					clients.get(clientId).getRemoteInstance().playStatus(gameStatus, winCoordinates);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             } else{
-                clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.INVALID_PLAY, null);
+                try {
+					clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.INVALID_PLAY, null);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }   
     }
@@ -139,7 +155,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer{
                    .filter(entry -> entry.getValue().getUsername().equals(username))
                    .findFirst();
         
-        return !clientWithGivenUsername.isEmpty();
+        return clientWithGivenUsername.isPresent();
     }
     
     private boolean isGameAlreadyFull(){

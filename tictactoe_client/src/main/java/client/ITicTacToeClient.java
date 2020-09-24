@@ -24,5 +24,5 @@ public interface ITicTacToeClient extends Remote {
      */
     public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException;
     
-    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates);
+    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException;
 }

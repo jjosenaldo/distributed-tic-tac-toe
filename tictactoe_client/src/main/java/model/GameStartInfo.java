@@ -15,19 +15,19 @@ public class GameStartInfo implements Serializable {
         this.otherPlayerLabel = otherPlayerLabel;
     }
     
-    boolean youStart(){
+    public boolean youStart(){
         return youStart;
     }
     
-    String getYourLabel(){
+    public String getYourLabel(){
         return yourLabel;
     }
     
-    String getOtherPlayerLabel(){
+    public String getOtherPlayerLabel(){
         return otherPlayerLabel;
     }
     
-    String getOtherPlayerUsername(){
+    public String getOtherPlayerUsername(){
         return otherPlayerUsername;
     }
 }

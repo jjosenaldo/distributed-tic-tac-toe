@@ -6,18 +6,65 @@ import java.rmi.server.UnicastRemoteObject;
 import model.GameStartInfo;
 import model.GameStatusAfterPlay;
 import model.TicTacToe;
+import server.ITicTacToeServer;
 
-public class Client extends UnicastRemoteObject implements ITicTacToeClient{    
+public class Client extends UnicastRemoteObject implements ITicTacToeClient, IClientController {    
     private final GUI gui;
+    private final ITicTacToeServer server;
+    private String yourUsername;
+    private String yourLabel;
+    private String otherPlayerUsername;
+    private String otherPlayerLabel;
+    private Integer myId;
     
-    public Client(GUI gui) throws RemoteException {
+    public Client(GUI gui, ITicTacToeServer server) throws RemoteException {
         super();
         this.gui = gui;
+        this.server = server;
     }
-
+    
     @Override
+    public void play(int row, int col) {
+    	try {
+			server.play(row, col, myId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    }
+   
+    public String getYourUsername() {
+		return yourUsername;
+	}
+    
+    @Override
+	public String getYourLabel() {
+		return yourLabel;
+	}
+	
+	public String getOtherPlayerUsername() {
+		return otherPlayerUsername;
+	}
+	
+	public String getOtherPlayerLabel() {
+		return otherPlayerLabel;
+	}
+	
+	@Override
     public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException {
-        gui.showGameHomeScreen(info, board);
+    	this.yourLabel = info.getYourLabel();
+    	this.otherPlayerLabel = info.getOtherPlayerLabel();
+    	this.otherPlayerUsername = info.getOtherPlayerUsername();
+    	
+    	if(info.youStart()) {
+    		// TODO
+    		// gui.setYourTurn(this.yourUsername); // Habilita o tabuleiro
+    	}
+    	else {
+    		// TODO
+    		// gui.setOtherPlayerTurn(this.otherPlayUsername); // Bloqueia o tabuleiro
+    	}
+    	// TODO
+    	// gui.initGame();
     }
 
     @Override
@@ -62,4 +109,19 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient{
                 break;
         }
     }
+
+	@Override
+	public boolean register(String username) {
+		try {
+			Integer id = server.registerClient(this, username);
+			if(id != null) {
+				this.myId = id;
+				this.yourUsername = username;
+				return true;
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

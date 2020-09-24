@@ -12,9 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class GUISwing extends JFrame {
+import client.IClientController;
+import model.GameStartInfo;
+import model.TicTacToe;
+
+public class GUISwing extends JFrame implements GUI {
 	private static final long serialVersionUID = -6411296905838649087L;
 	
+	private IClientController client; 
 	private JPanel homeScreen;
 	private JPanel loadingScreen;
 	private JPanel gameScreen;
@@ -28,8 +33,14 @@ public class GUISwing extends JFrame {
 	 * @param username The chosen username.
 	 */
 	private void enterUsername(String username) {
-		updateScreen(loadingScreen); 
-		System.out.println("Registrei " + username);
+		updateScreen(loadingScreen);
+		boolean ok = client.register(username);
+		
+		if(!ok) {
+			// TODO: Avisar ao client que não deu certo
+			updateScreen(homeScreen);
+		}
+		System.out.println("Registrei " + username); // TODO: Remove after
 	}
 	
 	/**
@@ -38,7 +49,16 @@ public class GUISwing extends JFrame {
 	 * @param col Cell's column.
 	 */
 	private void play(int row, int col) {
-		System.out.println("Click " + row + " " + col);
+		if(board[row][col].getText().isEmpty()) {
+			// TODO: client.getLabel, set label on cell
+			drawPlay(row, col, client.getYourLabel());
+			client.play(row, col);
+			System.out.println("Click " + row + " " + col);
+		}
+	}
+	
+	public void drawPlay(int row, int col, String label) {
+		board[row][col].setText(label);
 	}
 	
 	/**
@@ -165,8 +185,10 @@ public class GUISwing extends JFrame {
 		return panel;
 	}
 	
-	public GUISwing() {
+	public GUISwing(IClientController client) {
 		super("TicTacToe");
+		
+		this.client = client;
 		this.board = new JButton[3][3];
 		this.homeScreen = createHomeScreen();
 		this.loadingScreen = createLoadingScreen();
@@ -181,7 +203,60 @@ public class GUISwing extends JFrame {
 	
 	// TODO: It's just a main for test GUI. Remove it after
 	public static void main(String[] args) {
-		new GUISwing();
+		//new GUISwing(null);
+	}
+
+	@Override
+	public void showGameHomeScreen(GameStartInfo info, TicTacToe board) {
+		
+	}
+
+	@Override
+	public void showInvalidPlayScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showNotYourTurnScreen() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawOpponentPlay(int row, int col) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void finishGameWithWin(int[][] winCoordinates) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void finishGameWithDraw() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void finishGameWithLoss(int[][] winCoordinates) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void goToThisPlayerTurn() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void waitOtherPlayerTurn() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
