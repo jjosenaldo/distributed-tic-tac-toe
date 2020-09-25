@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class TicTacToe implements Serializable {
+public class TicTacToe {
     private final String[][] board;
     
     public TicTacToe(){
@@ -48,6 +46,7 @@ public class TicTacToe implements Serializable {
         for(int rowOrCol = 0; rowOrCol < 3; ++rowOrCol){
             String possibleHorizontallWinner = board[rowOrCol][0];
             
+            // Verify if someone win at horizontal
             if(!possibleHorizontallWinner.isEmpty()){
                 if(board[rowOrCol][1].equals(possibleHorizontallWinner) && 
                     board[rowOrCol][2].equals(possibleHorizontallWinner)){
@@ -55,8 +54,8 @@ public class TicTacToe implements Serializable {
                 }
             }
             
+            // Verify if someone win at vertical
             String possibleVerticalWinner = board[0][rowOrCol];
-            
             if(!possibleVerticalWinner.isEmpty()){
                 if(board[1][rowOrCol].equals(possibleVerticalWinner) && 
                     board[2][rowOrCol].equals(possibleVerticalWinner)){
@@ -65,18 +64,24 @@ public class TicTacToe implements Serializable {
             }
         }
         
+        // Verify if someone win at diagonals
+        if((board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2])) 
+        		|| (board[2][0].equals(board[1][1]) && board[1][1].equals(board[0][2]))) 
+        	return board[1][1].isEmpty() ? null : board[1][1];
+        
+        
+        // Verify if it is not a draw
         for(int row = 0; row < 3; ++row)
             for(int col = 0; col < 3; ++col)
                 if(board[row][col].isEmpty())
-                    return null;
-        
-        return "";
+                    return null; // game is running
+        return ""; // draw
     }
     
     public int[][] getWinCoordinates(){
         for(int rowOrCol = 0; rowOrCol < 3; ++rowOrCol){
             String possibleHorizontallWinner = board[rowOrCol][0];
-            
+            // Verify if someone win at horizontal
             if(!possibleHorizontallWinner.isEmpty()){
                 if(board[rowOrCol][1].equals(possibleHorizontallWinner) && 
                     board[rowOrCol][2].equals(possibleHorizontallWinner)){
@@ -84,8 +89,8 @@ public class TicTacToe implements Serializable {
                 }
             }
             
+            // Verify if someone win at vertical
             String possibleVerticalWinner = board[0][rowOrCol];
-            
             if(!possibleVerticalWinner.isEmpty()){
                 if(board[1][rowOrCol].equals(possibleVerticalWinner) && 
                     board[2][rowOrCol].equals(possibleVerticalWinner)){
@@ -93,6 +98,12 @@ public class TicTacToe implements Serializable {
                 }
             }
         }
+        
+        // Verify if someone win at diagonals
+        if(board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2]))
+        	return board[1][1].isEmpty() ? null : new int[][]{{0,0}, {1,1}, {2,2}};
+        if(board[2][0].equals(board[1][1]) && board[1][1].equals(board[0][2]))
+        	return board[1][1].isEmpty() ? null : new int[][]{{2,0}, {1,1}, {0,2}};
         
         return null;
     }

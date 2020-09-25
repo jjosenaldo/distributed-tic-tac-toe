@@ -7,13 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.GameStartInfo;
 import model.GameStatusAfterPlay;
-import model.TicTacToe;
 import server.ITicTacToeServer;
 
 public class Client extends UnicastRemoteObject implements ITicTacToeClient, IClientController {
 	/** Generated serial version id */
-	private static final long serialVersionUID = -6115395770504131656L;
-	
+	private static final long serialVersionUID = 2798766524739872642L;
 	private GUI gui;
     private final ITicTacToeServer server;
     private String yourUsername;
@@ -57,7 +55,7 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
     }
 
     @Override
-    public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException {
+    public void startGame(GameStartInfo info) throws RemoteException {
         this.yourLabel = info.getYourLabel();
         this.otherPlayerLabel = info.getOtherPlayerLabel();
         this.otherPlayerUsername = info.getOtherPlayerUsername();

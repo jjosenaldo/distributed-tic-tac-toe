@@ -18,8 +18,9 @@ import model.GameStatusAfterPlay;
 import model.TicTacToe;
 
 public class Server extends UnicastRemoteObject implements ITicTacToeServer {
-
-    private final Map<Integer, ClientInfo> clients;
+    /** Generated serial version id */
+	private static final long serialVersionUID = -797097176592450554L;
+	private final Map<Integer, ClientInfo> clients;
     private Integer currentPlayer;
     private final TicTacToe ticTacToe = new TicTacToe();
 
@@ -125,7 +126,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer {
             // Calls the startGame() method in the current client's instance (in another thread)
             new Thread(() -> {
                 try {
-                    clientInfo.getRemoteInstance().startGame(gameInfo, ticTacToe);
+                    clientInfo.getRemoteInstance().startGame(gameInfo);
                 } catch (RemoteException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }

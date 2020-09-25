@@ -1,16 +1,19 @@
 package gui;
 
-import client.IClientController;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import client.IClientController;
 
 public class GUISwing extends JFrame implements GUI {
 	/* Generated serial version id */
@@ -68,10 +71,7 @@ public class GUISwing extends JFrame implements GUI {
      */
     @Override
     public void setTurnUsername(String username) {
-        // TODO: BUG: the Label is not updated when this method
-        // is called for the second time, i.e., when the player's
-        // username is supplied
-        this.turnUsername = new JLabel(username + "'s turn");
+        this.turnUsername.setText(username + "'s turn");
     }
 
     /**
@@ -161,7 +161,7 @@ public class GUISwing extends JFrame implements GUI {
         JPanel panel = new JPanel(new BorderLayout());
 
         // Top
-        setTurnUsername("<USERNAME>");
+        this.turnUsername = new JLabel("<USERNAME>'s turn");
         JPanel top = new JPanel(new GridBagLayout());
         GridBagConstraints top_c = new GridBagConstraints();
         top_c.insets = new Insets(10, 5, 5, 5);
@@ -172,6 +172,7 @@ public class GUISwing extends JFrame implements GUI {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = new JButton(""); // TODO: Ver depois
+                board[i][j].setFont(new Font("Arial", Font.PLAIN, 100));
 
                 int side = Math.min(WIDTH, HEIGHT);
                 side = (side - 20) / 3;
@@ -215,14 +216,10 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void showGameScreen(boolean blocked) {
-        // TODO: if "blocked" is true, the user cannot be
-        // able to interact with the game
-        if (blocked) {
-            updateScreen(loadingScreen);
-        } else {
-            updateScreen(gameScreen);
-        }
-
+    	for (int i = 0; i < 3; i++)
+    		for (int j = 0; j < 3; j++)
+    			board[i][j].setEnabled(!blocked);
+    	updateScreen(gameScreen);
     }
 
     @Override
@@ -259,15 +256,12 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void goToThisPlayerTurn() {
-        // TODO: This method should unblock the board
-        updateScreen(gameScreen);
-
+    	showGameScreen(false);
     }
 
     @Override
     public void waitOtherPlayerTurn() {
-        // TODO: This method should block the board
-        updateScreen(loadingScreen);
+    	showGameScreen(true);
     }
 
 }
