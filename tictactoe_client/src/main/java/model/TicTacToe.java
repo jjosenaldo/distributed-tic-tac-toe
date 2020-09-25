@@ -3,7 +3,9 @@ package model;
 import java.io.Serializable;
 
 public class TicTacToe implements Serializable {
-    private final String[][] board;
+    /** Generated serial version id. */
+	private static final long serialVersionUID = -5399623549450803617L;
+	private final String[][] board;
     
     public TicTacToe(){
         this.board = new String[3][3];

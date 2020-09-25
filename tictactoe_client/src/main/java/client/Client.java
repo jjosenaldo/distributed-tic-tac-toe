@@ -11,8 +11,10 @@ import model.TicTacToe;
 import server.ITicTacToeServer;
 
 public class Client extends UnicastRemoteObject implements ITicTacToeClient, IClientController {
-
-    private GUI gui;
+	/** Generated serial version id */
+	private static final long serialVersionUID = -6115395770504131656L;
+	
+	private GUI gui;
     private final ITicTacToeServer server;
     private String yourUsername;
     private String yourLabel;
@@ -86,6 +88,8 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient, ICl
                 break;
             case DRAW:
                 gui.finishGameWithDraw();
+                break;
+            default: /* Nothing */
         }
     }
 

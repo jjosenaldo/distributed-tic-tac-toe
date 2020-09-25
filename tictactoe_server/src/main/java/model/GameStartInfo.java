@@ -3,9 +3,9 @@ package model;
 import java.io.Serializable;
 
 public class GameStartInfo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    private final String otherPlayerLabel;
+    /** Generated serial version id */
+	private static final long serialVersionUID = -6920475495146844207L;
+	private final String otherPlayerLabel;
     private final String otherPlayerUsername;
     private final boolean youStart;
     private final String yourLabel;
@@ -17,19 +17,19 @@ public class GameStartInfo implements Serializable {
         this.otherPlayerLabel = otherPlayerLabel;
     }
 
-    boolean youStart() {
+    public boolean youStart() {
         return youStart;
     }
 
-    String getYourLabel() {
+    public String getYourLabel() {
         return yourLabel;
     }
 
-    String getOtherPlayerLabel() {
+    public String getOtherPlayerLabel() {
         return otherPlayerLabel;
     }
 
-    String getOtherPlayerUsername() {
+    public String getOtherPlayerUsername() {
         return otherPlayerUsername;
     }
 }

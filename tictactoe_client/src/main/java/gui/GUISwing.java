@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class GUISwing extends JFrame implements GUI {
-
+	/* Generated serial version id */
     private static final long serialVersionUID = -6411296905838649087L;
 
     private final IClientController client;
@@ -173,7 +173,7 @@ public class GUISwing extends JFrame implements GUI {
             for (int j = 0; j < 3; j++) {
                 board[i][j] = new JButton(""); // TODO: Ver depois
 
-                int side = WIDTH < HEIGHT ? WIDTH : HEIGHT;
+                int side = Math.min(WIDTH, HEIGHT);
                 side = (side - 20) / 3;
                 board[i][j].setPreferredSize(new Dimension(side, side));
                 int row = i;
