@@ -22,7 +22,7 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer {
 	private static final long serialVersionUID = -797097176592450554L;
 	private final Map<Integer, ClientInfo> clients;
     private Integer currentPlayer;
-    private final TicTacToe ticTacToe = new TicTacToe();
+    private TicTacToe ticTacToe;
 
     public Server() throws RemoteException {
         super();
@@ -97,6 +97,11 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer {
                 } catch (RemoteException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+                if(gameStatus == GameStatusAfterPlay.PLAYER_LOST 
+                		|| gameStatus == GameStatusAfterPlay.PLAYER_WON 
+                		|| gameStatus == GameStatusAfterPlay.DRAW)
+                	clients.clear();
             } else {
                 try {
                     clients.get(clientId).getRemoteInstance().playStatus(GameStatusAfterPlay.INVALID_PLAY, null);
@@ -109,6 +114,8 @@ public class Server extends UnicastRemoteObject implements ITicTacToeServer {
 
     private void startGame() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
+        ticTacToe = new TicTacToe();
+        
         List<Entry<Integer, ClientInfo>> clientList = new ArrayList<>(clients.entrySet());
 
         for (int i = 0; i < clientList.size(); ++i) {
