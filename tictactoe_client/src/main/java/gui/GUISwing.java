@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -22,9 +23,6 @@ public class GUISwing extends JFrame implements GUI {
     private final IClientController client;
     private final JPanel homeScreen;
     private final JPanel loadingScreen;
-    private final JPanel youWonScreen;
-    private final JPanel youLostScreen;
-    private final JPanel youDrewScreen;
     private final JPanel gameScreen;
     private JLabel turnUsername;
     private final JButton[][] board;
@@ -162,10 +160,12 @@ public class GUISwing extends JFrame implements GUI {
 
         // Top
         this.turnUsername = new JLabel("<USERNAME>'s turn");
+        this.turnUsername.setFont(new Font("Arial", Font.PLAIN, 20));
         JPanel top = new JPanel(new GridBagLayout());
         GridBagConstraints top_c = new GridBagConstraints();
-        top_c.insets = new Insets(10, 5, 5, 5);
+        top_c.insets = new Insets(20, 5, 5, 5);
         top.add(this.turnUsername, top_c);
+        
 
         // Center
         JPanel center = new JPanel(new GridBagLayout());
@@ -202,9 +202,6 @@ public class GUISwing extends JFrame implements GUI {
         this.board = new JButton[3][3];
         this.homeScreen = createHomeScreen();
         this.loadingScreen = createSimpleScreenWithText("Loading");
-        this.youWonScreen = createSimpleScreenWithText("You won!");
-        this.youLostScreen = createSimpleScreenWithText("You lost!");
-        this.youDrewScreen = createSimpleScreenWithText("Draw!");
         this.gameScreen = createGameScreen();
 
         this.updateScreen(homeScreen);
@@ -236,22 +233,43 @@ public class GUISwing extends JFrame implements GUI {
 
     @Override
     public void finishGameWithWin(int[][] winCoordinates) {
-        // TODO
-        updateScreen(youWonScreen);
+        for(int i = 0; i < 3; i++) {
+        	int row = winCoordinates[i][0];
+        	int col = winCoordinates[i][1];
+        	
+        	board[row][col].setBackground(Color.GREEN);
+        }
+        
+        this.turnUsername.setText("YOU WIN");
+        this.turnUsername.setFont(new Font("Arial", Font.PLAIN, 40));
+        this.turnUsername.setForeground(Color.GREEN);
+        
+        showGameScreen(true);
     }
 
     @Override
     public void finishGameWithDraw() {
-        // TODO
-        updateScreen(youDrewScreen);
+    	this.turnUsername.setText("DRAW");
+        this.turnUsername.setFont(new Font("Arial", Font.PLAIN, 40));
+        this.turnUsername.setForeground(Color.GRAY);
 
+        showGameScreen(true);
     }
 
     @Override
     public void finishGameWithLoss(int[][] winCoordinates) {
-        // TODO
-        updateScreen(youLostScreen);
-
+    	for(int i = 0; i < 3; i++) {
+        	int row = winCoordinates[i][0];
+        	int col = winCoordinates[i][1];
+        	
+        	board[row][col].setBackground(Color.RED);
+        }
+        
+        this.turnUsername.setText("YOU LOSE");
+        this.turnUsername.setFont(new Font("Arial", Font.PLAIN, 40));
+        this.turnUsername.setForeground(Color.RED);
+        
+        showGameScreen(true);
     }
 
     @Override
