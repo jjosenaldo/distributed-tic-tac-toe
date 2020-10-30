@@ -9,6 +9,7 @@ public class Game {
     private AtomicLong gameId;
     private Board board;
     private Map<String, String> playerMarks;
+    private String currentPlayerId;
 
     private Game() {
         board = new Board();
@@ -29,21 +30,15 @@ public class Game {
     }
 
     public PlayStatus play(int row, int column, String playerId, long gameId) {
-        // TODO
+        if (this.gameId.get() != gameId) {
+            return PlayStatus.invalidGame();
+        } else if (!isPositionInsideBoardBounds(row, column)) {
+            return PlayStatus.invalidBoardPosition();
+        }
         return null;
     }
 
-    String[][] getBoard() {
-        return board.board;
-    }
-
-    private class Board {
-        String[][] board;
-
-        private Board() {
-            for (int row = 0; row < 3; ++row)
-                for (int col = 0; col < 3; ++col)
-                    board[row][col] = "";
-        }
+    private boolean isPositionInsideBoardBounds(int row, int column) {
+        return row >= 0 && row < 3 && column >= 0 && column < 3;
     }
 }
