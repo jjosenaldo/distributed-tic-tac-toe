@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PlayController {
-    private PlayService service = new PlayService();
+    private PlayService service = PlayService.getInstance();
 
     @PostMapping(value = "/play")
     public @ResponseBody ResponseEntity<Object> play(@RequestBody PlayInfo playInfo) {
-        // TODO
-        return new ResponseEntity<>(new PlayStatus("vla", "vle"), HttpStatus.OK);
+        PlayStatus playStatus = service.play(playInfo.getRow(), playInfo.getColumn(), playInfo.getPlayerId(),
+                playInfo.getGameId());
+        return new ResponseEntity<>(playStatus, HttpStatus.OK);
     }
 }

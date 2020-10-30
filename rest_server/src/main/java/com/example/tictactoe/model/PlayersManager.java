@@ -12,15 +12,24 @@ public class PlayersManager {
         currentPlayerId = "";
     }
 
-    boolean isPlayerValid(String playerId) {
+    public boolean isPlayerValid(String playerId) {
         return playerLabels.keySet().contains(playerId);
     }
 
-    boolean isCurrentPlayer(String playerId) {
+    public boolean isCurrentPlayer(String playerId) {
         return playerId != null && playerId.equals(currentPlayerId);
     }
 
-    String getPlayerLabel(String playerId) {
+    public String getPlayerLabel(String playerId) {
         return playerLabels.get(playerId);
+    }
+
+    public void changeCurrentPlayer() {
+        for (String player : playerLabels.keySet()) {
+            if (!player.equals(currentPlayerId)) {
+                currentPlayerId = player;
+                break;
+            }
+        }
     }
 }
