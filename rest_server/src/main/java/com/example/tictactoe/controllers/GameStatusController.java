@@ -14,8 +14,9 @@ public class GameStatusController {
     private final GameStatusService service = new GameStatusService();
 
     @GetMapping("/status")
-    public ResponseEntity<GameStatus> getGameStatus(@RequestParam(value = "id", required = true) int id) {
-        GameStatus gameStatus = service.getGameStatus(id);
+    public ResponseEntity<GameStatus> getGameStatus(@RequestParam(value = "userId", required = true) int userId,
+            @RequestParam(value = "gameId", required = true) int gameId) {
+        GameStatus gameStatus = service.getGameStatus(userId, gameId);
 
         if (gameStatus == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
