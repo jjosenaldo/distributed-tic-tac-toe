@@ -25,7 +25,19 @@ public class PlayStatus {
         return new PlayStatus("error", "Jogo inválido.");
     }
 
-    public static PlayStatus invalidBoardPosition() {
-        return new PlayStatus("error", "Posição inválida.");
+    public static PlayStatus invalidPlayer() {
+        return new PlayStatus("error", "Jogador inválido.");
+    }
+
+    public static PlayStatus notYourTurn() {
+        return new PlayStatus("error", "O jogo não está na sua vez.");
+    }
+
+    public static PlayStatus invalidPlay() {
+        return new PlayStatus("error", "Jogada inválida.");
+    }
+
+    public static PlayStatus ok() {
+        return new PlayStatus("ok", "");
     }
 }

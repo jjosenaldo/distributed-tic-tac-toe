@@ -8,13 +8,12 @@ public class Game {
     private static Game instance;
     private AtomicLong gameId;
     private Board board;
-    private Map<String, String> playerMarks;
-    private String currentPlayerId;
+    private PlayersManager playersManager;
 
     private Game() {
         board = new Board();
-        playerMarks = new HashMap<String, String>();
         gameId = new AtomicLong(0);
+        playersManager = new PlayersManager();
     }
 
     public static Game getInstance() {
@@ -30,15 +29,24 @@ public class Game {
     }
 
     public PlayStatus play(int row, int column, String playerId, long gameId) {
-        if (this.gameId.get() != gameId) {
+        if (!isGameIdValid(gameId)) {
             return PlayStatus.invalidGame();
-        } else if (!isPositionInsideBoardBounds(row, column)) {
-            return PlayStatus.invalidBoardPosition();
+        } else if (!playersManager.isPlayerValid(playerId)) {
+            return PlayStatus.invalidPlayer();
+        } else if (!playersManager.isCurrentPlayer(playerId)) {
+            return PlayStatus.notYourTurn();
         }
-        return null;
+
+        String playerLabel = playersManager.getPlayerLabel(playerId);
+
+        if (!board.applyPlayIfValid(row, column, playerLabel)) {
+            return PlayStatus.invalidPlay();
+        }
+
+        return PlayStatus.ok();
     }
 
-    private boolean isPositionInsideBoardBounds(int row, int column) {
-        return row >= 0 && row < 3 && column >= 0 && column < 3;
+    private boolean isGameIdValid(long gameId) {
+        return this.gameId.get() == gameId;
     }
 }
