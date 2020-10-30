@@ -20,4 +20,12 @@ public class PlayStatus {
     public String getStatus() {
         return status;
     }
+
+    public static PlayStatus invalidGame() {
+        return new PlayStatus("error", "Jogo inválido.");
+    }
+
+    public static PlayStatus invalidBoardPosition() {
+        return new PlayStatus("error", "Posição inválida.");
+    }
 }
