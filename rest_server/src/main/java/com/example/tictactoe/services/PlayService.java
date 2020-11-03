@@ -14,7 +14,7 @@ public class PlayService {
 
     private PlayService() {
         board = new Board();
-        playersManager = new PlayersManager();
+        playersManager = PlayersManager.getInstance();
     }
 
     public static PlayService getInstance() {
