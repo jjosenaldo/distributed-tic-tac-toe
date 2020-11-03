@@ -1,4 +1,4 @@
-package com.example.tictactoe.model;
+package com.example.tictactoe.services;
 
 import java.util.HashMap;
 import java.util.Map;

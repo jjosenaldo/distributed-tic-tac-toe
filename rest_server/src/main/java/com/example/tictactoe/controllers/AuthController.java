@@ -1,6 +1,6 @@
 package com.example.tictactoe.controllers;
 
-import com.example.tictactoe.model.PlayersService;
+import com.example.tictactoe.services.PlayersService;
 import com.example.tictactoe.services.auth.AuthResult;
 import com.example.tictactoe.services.auth.Name;
 

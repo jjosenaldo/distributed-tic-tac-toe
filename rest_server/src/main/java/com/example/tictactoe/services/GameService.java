@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.example.tictactoe.model.Board;
 import com.example.tictactoe.model.PlayStatus;
-import com.example.tictactoe.model.PlayersService;
 
 public class GameService {
     private static GameService instance;
