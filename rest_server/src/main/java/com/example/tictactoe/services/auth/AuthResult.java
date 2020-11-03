@@ -3,20 +3,20 @@ package com.example.tictactoe.services.auth;
 public class AuthResult {
     private String status;
     private String message;
-    private String playerId;
+    private String token;
 
     public AuthResult(String status, String message, String playerId) {
         this.setStatus(status);
         this.setMessage(message);
-        this.setPlayerId(playerId);
+        this.setToken(playerId);
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public String getToken() {
+        return token;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setToken(String playerId) {
+        this.token = playerId;
     }
 
     public String getMessage() {
@@ -43,8 +43,8 @@ public class AuthResult {
         return new AuthResult("error", "O nome informado já está em uso.", null);
     }
 
-    public static AuthResult ok() {
-        return new AuthResult("ok", "", null);
+    public static AuthResult ok(String id) {
+        return new AuthResult("ok", "Usuário registrado com sucesso.", id);
     }
 
 }

@@ -3,16 +3,20 @@ package com.example.tictactoe.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.tictactoe.data.Game;
 import com.example.tictactoe.services.auth.AuthResult;
 
 public class PlayersService {
     private Map<String, String> playerLabels;
     private String currentPlayerId;
     private static PlayersService instance;
+    
+    private Game game;
 
     public PlayersService() {
         playerLabels = new HashMap<String, String>();
         currentPlayerId = "";
+        game = new Game();
     }
 
     public static PlayersService getInstance() {
@@ -24,18 +28,11 @@ public class PlayersService {
     }
 
     public AuthResult register(String newPlayerName) {
-        if (playerLabels.size() > 1) {
-            return AuthResult.noPlaceAvailable();
-        } else {
-            for (String name : playerLabels.values()) {
-                if (name.equals(newPlayerName)) {
-                    return AuthResult.nameAlreadyUsed();
-                }
-            }
-
-            // TODO: de fato registrar o usuário
-            return AuthResult.ok();
-        }
+    	if(game.isFull())
+    		return AuthResult.noPlaceAvailable();
+    	if(game.constains(newPlayerName))
+    		return AuthResult.nameAlreadyUsed();
+    	return AuthResult.ok(game.addPlayer(newPlayerName));
     }
 
     public boolean isPlayerValid(String playerId) {
