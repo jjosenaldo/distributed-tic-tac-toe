@@ -43,4 +43,8 @@ public class AuthResult {
         return new AuthResult("error", "O nome informado já está em uso.", null);
     }
 
+    public static AuthResult ok() {
+        return new AuthResult("ok", "", null);
+    }
+
 }

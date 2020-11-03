@@ -5,19 +5,19 @@ import java.util.Map;
 
 import com.example.tictactoe.services.auth.AuthResult;
 
-public class PlayersManager {
+public class PlayersService {
     private Map<String, String> playerLabels;
     private String currentPlayerId;
-    private static PlayersManager instance;
+    private static PlayersService instance;
 
-    private PlayersManager() {
+    public PlayersService() {
         playerLabels = new HashMap<String, String>();
         currentPlayerId = "";
     }
 
-    public static PlayersManager getInstance() {
+    public static PlayersService getInstance() {
         if (instance == null) {
-            instance = new PlayersManager();
+            instance = new PlayersService();
         }
 
         return instance;
@@ -33,6 +33,8 @@ public class PlayersManager {
                 }
             }
 
+            // TODO: de fato registrar o usuário
+            return AuthResult.ok();
         }
     }
 

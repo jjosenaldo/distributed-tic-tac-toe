@@ -4,22 +4,22 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.example.tictactoe.model.Board;
 import com.example.tictactoe.model.PlayStatus;
-import com.example.tictactoe.model.PlayersManager;
+import com.example.tictactoe.model.PlayersService;
 
-public class PlayService {
-    private static PlayService instance;
+public class GameService {
+    private static GameService instance;
     private AtomicLong gameId;
     private Board board;
-    private PlayersManager playersManager;
+    private PlayersService playersManager;
 
-    private PlayService() {
+    private GameService() {
         board = new Board();
-        playersManager = PlayersManager.getInstance();
+        playersManager = PlayersService.getInstance();
     }
 
-    public static PlayService getInstance() {
+    public static GameService getInstance() {
         if (instance == null) {
-            instance = new PlayService();
+            instance = new GameService();
         }
 
         return instance;
