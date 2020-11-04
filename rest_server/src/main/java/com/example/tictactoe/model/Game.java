@@ -57,8 +57,13 @@ public class Game {
 				currPlayerName);
 	}
 	
-	public GameStatus getGameStatus(String token) throws TokenDoesNotExistException, GameHasNotStartedException {
-		Player you = getPlayer(token);
+	public GameStatus getGameStatus(String token) throws TokenDoesNotExistException {
+		Player you;
+		try {
+			you = getPlayer(token);
+		} catch (GameHasNotStartedException e) {
+			return new GameStatus(GameStatus.Status.NOT_STARTED, null, null, null);
+		}
 		
 		String status = null;
 		Boolean isYourTurn = null;

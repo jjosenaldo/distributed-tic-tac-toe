@@ -4,6 +4,7 @@ import java.util.List;
 
 public class GameStatus {
 	public static class Status {
+		public static final String NOT_STARTED = "não começou";
 		public static final String RUNNING = "executando";
 		public static final String DRAW = "empate";
 		public static final String WIN = "venceu";

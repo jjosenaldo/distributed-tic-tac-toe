@@ -3,7 +3,6 @@ package com.example.tictactoe.services;
 import org.springframework.stereotype.Service;
 
 import com.example.tictactoe.model.Game;
-import com.example.tictactoe.model.exception.GameHasNotStartedException;
 import com.example.tictactoe.model.exception.TokenDoesNotExistException;
 import com.example.tictactoe.model.response.StatusResponse;
 
@@ -20,8 +19,6 @@ public class GameStatusService {
 			return StatusResponse.ok(game.getGameStatus(token));
 		} catch (TokenDoesNotExistException e) {
 			return StatusResponse.tokenIsInvalid();
-		} catch (GameHasNotStartedException e) {
-			return StatusResponse.gameHasNotStartedYet();
 		}
     }
 }
