@@ -1,4 +1,4 @@
-package com.example.tictactoe.data;
+package com.example.tictactoe.model;
 
 public class Player {
 	private String token;
@@ -6,20 +6,16 @@ public class Player {
 	private String label;
 	
 	public Player(String token, String name, String label) {
-		super();
 		this.token = token;
-		this.name = name;
-		if(label.equals("X") || label.equals("O"))
-			this.label = label;
-		else
-			this.label = null;
+		this.name = name;	
+		this.label = label;
 	}
 
 	public String getToken() {
 		return token;
 	}
 
-	public void setId(String token) {
+	public void setToken(String token) {
 		this.token = token;
 	}
 
@@ -36,9 +32,6 @@ public class Player {
 	}
 
 	public void setLabel(String label) {
-		if(label.equals("X") || label.equals("O"))
-			this.label = label;
-		else
-			this.label = null;
+		this.label = label;
 	}
 }

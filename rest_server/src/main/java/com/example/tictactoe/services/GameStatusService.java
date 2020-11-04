@@ -1,11 +1,27 @@
 package com.example.tictactoe.services;
 
-import com.example.tictactoe.model.GameStatus;
+import org.springframework.stereotype.Service;
 
+import com.example.tictactoe.model.Game;
+import com.example.tictactoe.model.exception.GameHasNotStartedException;
+import com.example.tictactoe.model.exception.TokenDoesNotExistException;
+import com.example.tictactoe.model.response.StatusResponse;
+
+@Service
 public class GameStatusService {
-    private GameStatus gameStatus;
+	private Game game;
+	
+	public GameStatusService() {
+		game = Game.getInstance();
+	}
 
-    public GameStatus getGameStatus(int playerId, int gameId) {
-        return gameStatus;
+    public StatusResponse getGameStatus(String token) {
+    	try {
+			return StatusResponse.ok(game.getGameStatus(token));
+		} catch (TokenDoesNotExistException e) {
+			return StatusResponse.tokenIsInvalid();
+		} catch (GameHasNotStartedException e) {
+			return StatusResponse.gameHasNotStartedYet();
+		}
     }
 }

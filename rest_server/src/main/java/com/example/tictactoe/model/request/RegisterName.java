@@ -1,13 +1,13 @@
-package com.example.tictactoe.services.auth;
+package com.example.tictactoe.model.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Name {
+public class RegisterName {
     private String name;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Name(@JsonProperty("name") String name) {
+    public RegisterName(@JsonProperty("name") String name) {
         this.name = name;
     }
 

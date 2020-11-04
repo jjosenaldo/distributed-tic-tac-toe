@@ -3,9 +3,14 @@ package com.example.tictactoe.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.tictactoe.data.Game;
-import com.example.tictactoe.services.auth.AuthResult;
+import org.springframework.stereotype.Service;
 
+import com.example.tictactoe.model.Game;
+import com.example.tictactoe.model.exception.GameIsFullException;
+import com.example.tictactoe.model.exception.NameAlreadyExistsException;
+import com.example.tictactoe.model.response.RegistrationResponse;
+
+@Service
 public class PlayersService {
     private Map<String, String> playerLabels;
     private String currentPlayerId;
@@ -16,7 +21,7 @@ public class PlayersService {
     public PlayersService() {
         playerLabels = new HashMap<String, String>();
         currentPlayerId = "";
-        game = new Game();
+        game = Game.getInstance();
     }
 
     public static PlayersService getInstance() {
@@ -27,12 +32,14 @@ public class PlayersService {
         return instance;
     }
 
-    public AuthResult register(String newPlayerName) {
-    	if(game.isFull())
-    		return AuthResult.noPlaceAvailable();
-    	if(game.constains(newPlayerName))
-    		return AuthResult.nameAlreadyUsed();
-    	return AuthResult.ok(game.addPlayer(newPlayerName));
+    public RegistrationResponse register(String newPlayerName) {
+    	try {
+			return RegistrationResponse.ok(game.addPlayer(newPlayerName));
+		} catch (GameIsFullException e) {
+			return RegistrationResponse.noPlaceAvailable();
+		} catch (NameAlreadyExistsException e) {
+			return RegistrationResponse.nameAlreadyUsed();
+		}
     }
 
     public boolean isPlayerValid(String playerId) {

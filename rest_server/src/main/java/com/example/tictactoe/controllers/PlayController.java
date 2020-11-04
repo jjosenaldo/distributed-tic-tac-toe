@@ -1,9 +1,11 @@
 package com.example.tictactoe.controllers;
 
-import com.example.tictactoe.model.PlayInfo;
-import com.example.tictactoe.model.PlayStatus;
+import com.example.tictactoe.model.request.PlayInfo;
+import com.example.tictactoe.model.response.PlayResponse;
+import com.example.tictactoe.model.response.Response;
 import com.example.tictactoe.services.GameService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PlayController {
-    private GameService service = GameService.getInstance();
+	@Autowired
+    private GameService service;
 
     @PostMapping(value = "/play")
-    public @ResponseBody ResponseEntity<Object> play(@RequestBody PlayInfo playInfo) {
-        PlayStatus playStatus = service.play(playInfo.getRow(), playInfo.getColumn(), playInfo.getPlayerId(),
-                playInfo.getGameId());
-        return new ResponseEntity<>(playStatus, HttpStatus.OK);
+    public @ResponseBody ResponseEntity<PlayResponse> play(@RequestBody PlayInfo playInfo) {
+        PlayResponse playResponse = service.play(playInfo.getRow(), 
+        		playInfo.getColumn(), playInfo.getToken());
+        
+        if(playResponse.getStatus().equals(Response.OK))
+        	return new ResponseEntity<>(playResponse, HttpStatus.OK);
+        else
+        	return new ResponseEntity<>(playResponse, HttpStatus.UNAUTHORIZED);
     }
 }
