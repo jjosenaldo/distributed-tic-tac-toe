@@ -69,16 +69,17 @@ public class Game {
 		List<List<String>> board = null;
 		List<List<Integer>> winCoordinates = getWinCoordinates();
 
-		if (gameIsRunning()) {
+		if (isWin(token))
+			status = GameStatus.Status.WIN;
+		else if (isLose(token))
+			status = GameStatus.Status.LOSE;
+		else if (isDraw(token))
+			status = GameStatus.Status.DRAW;
+		else {
 			status = GameStatus.Status.RUNNING;
 			isYourTurn = you.getName().equals(currPlayerName);
 			board = this.board.toJSONMatrix();
-		} else if (isDraw(token))
-			status = GameStatus.Status.DRAW;
-		else if (isLose(token))
-			status = GameStatus.Status.LOSE;
-		else if (isWin(token))
-			status = GameStatus.Status.WIN;
+		}
 
 		return new GameStatus(status, isYourTurn, board, winCoordinates);
 	}
@@ -98,7 +99,7 @@ public class Game {
 			throw new NotYourTurnException();
 
 		// Check if game is running
-		if (!gameIsRunning())
+		if (!isGameRunning(token))
 			throw new GameIsOverException();
 
 		if (!board.isCellAvailable(row, col))
@@ -107,6 +108,18 @@ public class Game {
 		changeCurrentPlayer();
 
 		board.setCell(row, col, you.getLabel());
+	}
+
+	private boolean isGameRunning(String token) throws TokenDoesNotExistException {
+		if (gameHasStarted())
+			System.out.println("jogo começou");
+		if (board.hasAvailableCells())
+			System.out.println("tem casas livres");
+		if (isWin(token))
+			System.out.println("vc ganhou");
+		if (isLose(token))
+			System.out.println("vc perdeu");
+		return gameHasStarted() && board.hasAvailableCells() && !isWin(token) && !isLose(token);
 	}
 
 	// Private Methods
@@ -151,23 +164,12 @@ public class Game {
 		return !(players.size() < 2);
 	}
 
-	private boolean gameIsRunning() {
-		if (!gameHasStarted())
-			return false;
-
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
-				if (board.getCell(i, j).equals(" "))
-					return true;
-		return false;
-	}
-
 	private boolean isDraw(String token) throws TokenDoesNotExistException {
-		return gameHasStarted() && !gameIsRunning() && !isWin(token) && !isLose(token);
+		return gameHasStarted() && !board.hasAvailableCells() && !isWin(token) && !isLose(token);
 	}
 
 	private boolean isWin(String token) throws TokenDoesNotExistException {
-		if (gameIsRunning())
+		if (!gameHasStarted())
 			return false;
 
 		try {
@@ -232,14 +234,14 @@ public class Game {
 	private boolean isLose(String token) throws TokenDoesNotExistException {
 		try {
 			String opponentToken = getOpponent(token).getToken();
-			return !isWin(opponentToken);
+			return isWin(opponentToken);
 		} catch (GameHasNotStartedException e) {
 			return false;
 		}
 	}
 
 	private List<List<Integer>> getWinCoordinates() {
-		if (!gameHasStarted() || gameIsRunning())
+		if (!gameHasStarted())
 			return null;
 
 		// Rows
