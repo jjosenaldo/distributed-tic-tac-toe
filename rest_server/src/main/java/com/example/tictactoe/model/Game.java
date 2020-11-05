@@ -104,6 +104,8 @@ public class Game {
 		if (!board.isCellAvailable(row, col))
 			throw new CellNotAvailableException();
 
+		changeCurrentPlayer();
+
 		board.setCell(row, col, you.getLabel());
 	}
 
@@ -133,6 +135,16 @@ public class Game {
 			return players.get(0);
 		else
 			throw new TokenDoesNotExistException();
+	}
+
+	private void changeCurrentPlayer() {
+		if (currPlayerName != null && players.size() > 1) {
+			if (players.get(0).getName().equals(currPlayerName)) {
+				currPlayerName = players.get(1).getName();
+			} else {
+				currPlayerName = players.get(0).getName();
+			}
+		}
 	}
 
 	private boolean gameHasStarted() {
