@@ -1,9 +1,11 @@
 package com.example.tictactoe.model.response;
 
+import org.springframework.http.HttpStatus;
+
 public class RegistrationResponse extends Response {
 	public static class Content {
-	    private String token;
-	    
+		private String token;
+
 		public Content(String token) {
 			this.token = token;
 		}
@@ -16,16 +18,16 @@ public class RegistrationResponse extends Response {
 			this.token = token;
 		}
 	}
-	
-    private Content content;
 
-    public RegistrationResponse(String status, String message, String token) {
-    	super(status, message);
-    	if(token != null)
-    		this.content = new Content(token);
-    	else
-    		this.content = null;
-    }
+	private Content content;
+
+	public RegistrationResponse(String status, String message, String token, HttpStatus httpStatus) {
+		super(status, message, httpStatus);
+		if (token != null)
+			this.content = new Content(token);
+		else
+			this.content = null;
+	}
 
 	public Content getContent() {
 		return content;
@@ -36,14 +38,16 @@ public class RegistrationResponse extends Response {
 	}
 
 	public static RegistrationResponse noPlaceAvailable() {
-        return new RegistrationResponse(Response.ERROR, "Não há vagas disponíveis.", null);
-    }
+		return new RegistrationResponse(Response.ERROR, "Não há vagas disponíveis.", null,
+				HttpStatus.SERVICE_UNAVAILABLE);
+	}
 
-    public static RegistrationResponse nameAlreadyUsed() {
-        return new RegistrationResponse(Response.ERROR, "O nome informado já está em uso.", null);
-    }
+	public static RegistrationResponse nameAlreadyUsed() {
+		return new RegistrationResponse(Response.ERROR, "O nome informado já está em uso.", null,
+				HttpStatus.UNPROCESSABLE_ENTITY);
+	}
 
-    public static RegistrationResponse ok(String token) {
-        return new RegistrationResponse(Response.OK, "Usuário registrado com sucesso.", token);
-    }
+	public static RegistrationResponse ok(String token) {
+		return new RegistrationResponse(Response.OK, "Usuário registrado com sucesso.", token, HttpStatus.OK);
+	}
 }

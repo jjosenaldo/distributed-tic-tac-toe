@@ -2,11 +2,9 @@ package com.example.tictactoe.controllers;
 
 import com.example.tictactoe.model.request.PlayInfo;
 import com.example.tictactoe.model.response.PlayResponse;
-import com.example.tictactoe.model.response.Response;
 import com.example.tictactoe.services.GameService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,17 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PlayController {
-	@Autowired
+    @Autowired
     private GameService service;
 
     @PostMapping(value = "/play")
     public @ResponseBody ResponseEntity<PlayResponse> play(@RequestBody PlayInfo playInfo) {
-        PlayResponse playResponse = service.play(playInfo.getRow(), 
-        		playInfo.getColumn(), playInfo.getToken());
-        
-        if(playResponse.getStatus().equals(Response.OK))
-        	return new ResponseEntity<>(playResponse, HttpStatus.OK);
-        else
-        	return new ResponseEntity<>(playResponse, HttpStatus.UNAUTHORIZED);
+        PlayResponse playResponse = service.play(playInfo.getRow(), playInfo.getColumn(), playInfo.getToken());
+        return new ResponseEntity<>(playResponse, playResponse.getHttpStatus());
     }
 }
