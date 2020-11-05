@@ -30,6 +30,15 @@ public class Board {
 		return board[i][j] == null || board[i][j].equals(EMPTY_CELL);
 	}
 
+	public boolean hasAvailableCells() {
+		for (int i = 0; i < 3; ++i)
+			for (int j = 0; j < 3; ++j)
+				if (isCellAvailable(i, j))
+					return true;
+
+		return false;
+	}
+
 	public List<List<String>> toJSONMatrix() {
 		List<List<String>> board = new ArrayList<>();
 
