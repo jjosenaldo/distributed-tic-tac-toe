@@ -1,0 +1,38 @@
+:toc: left
+:toclevels: 3     
+:toc-title: Índice                                                
+
+= Documentação dos Serviços Web do Servidor 
+
+== Cadastrar jogador
+
+A <<tbl:register_ok_request_fields,Tabela 1>> contém os parâmetros que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:register_ok_request_fields]]
+include::target/snippets/registerOk/request-fields.adoc[]
+
+Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo _content_ são mostrados na <<tbl:register_ok_request_fields,Tabela 2>>.
+
+.Atributos do campo `content` na resposta.
+[[tbl:register_ok_response_fields]]
+include::target/snippets/registerOk/response-fields.adoc[]
+
+A seguir, são mostrados exemplos de uma requisição válida e de sua resposta.
+
+.Requisição
+include::target/snippets/registerOk/http-request.adoc[]
+
+.Resposta
+include::target/snippets/registerOk/http-response.adoc[]
+
+Quando o jogador tenta se regitrar com um nome já utilizado, o servidor retorna a seguinte resposta: 
+
+.Resposta
+include::target/snippets/registerNameAlreadyUsed/http-response.adoc[]
+
+Finalmente, no caso de um jogador tentar se conectar quando dois outros já o fizeram, a seguinte resposta
+é retornada:
+
+.Resposta
+include::target/snippets/registerNoPlaceAvailable/http-response.adoc[]

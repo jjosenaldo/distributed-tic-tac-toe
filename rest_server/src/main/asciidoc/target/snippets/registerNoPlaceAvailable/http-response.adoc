@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 503 Service Unavailable
+Content-Type: application/json
+Content-Length: 89
+
+{
+  "status" : "erro",
+  "message" : "Não há vagas disponíveis.",
+  "content" : null
+}
+----

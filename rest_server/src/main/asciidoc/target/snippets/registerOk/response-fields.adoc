@@ -1,0 +1,8 @@
+|===
+|Path|Type|Description
+
+|`+content.token+`
+|`+String+`
+|Identificador do jogador.
+
+|===

@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "erro",
+  "message" : "O nome informado já está em uso.",
+  "content" : null
+}
+----

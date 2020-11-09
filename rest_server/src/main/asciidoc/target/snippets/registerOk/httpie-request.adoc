@@ -1,0 +1,8 @@
+[source,bash]
+----
+$ echo '{
+  "name" : "jose"
+}' | http POST 'http://localhost:8080/register' \
+    'Content-Type:application/json' \
+    'Accept:application/json'
+----
