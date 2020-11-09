@@ -6,15 +6,17 @@
 
 == Cadastrar jogador
 
-A <<tbl:register_ok_request_fields,Tabela 1>> contém os parâmetros que devem ser utilizados no corpo da requisição.
+Por meio deste serviço, um usuário cadastra-se para se participar do jogo.
+
+A <<tbl:register_ok_request_fields,Tabela 1>> contém os campos que devem ser utilizados no corpo da requisição.
 
 .Parâmetros do corpo da requisição.
 [[tbl:register_ok_request_fields]]
 include::target/snippets/registerOk/request-fields.adoc[]
 
-Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo _content_ são mostrados na <<tbl:register_ok_request_fields,Tabela 2>>.
+Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo _content_ são mostrados na <<tbl:register_ok_response_fields,Tabela 2>>.
 
-.Atributos do campo `content` na resposta.
+.Atributos do campo _content_ na resposta.
 [[tbl:register_ok_response_fields]]
 include::target/snippets/registerOk/response-fields.adoc[]
 
@@ -36,3 +38,28 @@ Finalmente, no caso de um jogador tentar se conectar quando dois outros já o fi
 
 .Resposta
 include::target/snippets/registerNoPlaceAvailable/http-response.adoc[]
+
+== Obter informações iniciais do jogo
+
+Após se cadastrar, por meio deste serviço o jogador obtém informações do jogo, como nomes e marcadores dos jogadores.
+Tais informações não mudam no decorrer do jogo.
+
+A <<tbl:game_info_ok_request_fields,Tabela 3>> contém os parâmetros que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:game_info_ok_request_fields]]
+include::target/snippets/gameInfoOk/request-parameters.adoc[]
+
+Os atributos do campo _content_ da resposta do servidor são mostrados na <<tbl:game_info_ok_response_fields,Tabela 4>>.
+
+.Atributos do campo _content_ na resposta.
+[[tbl:game_info_ok_response_fields]]
+include::target/snippets/gameInfoOk/response-fields.adoc[]
+
+A seguir, são mostrados um exemplo de requisição válida e a resposta do servidor.
+
+.Requisição
+include::target/snippets/gameInfoOk/http-request.adoc[]
+
+.Resposta
+include::target/snippets/gameInfoOk/http-response.adoc[]

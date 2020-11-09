@@ -1,0 +1,18 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 204
+
+{
+  "status" : "ok",
+  "message" : "Sucesso.",
+  "content" : {
+    "opponentName" : "jose",
+    "opponentLabel" : "gil",
+    "yourName" : "O",
+    "yourLabel" : "X",
+    "initialPlayerName" : "jose"
+  }
+}
+----
