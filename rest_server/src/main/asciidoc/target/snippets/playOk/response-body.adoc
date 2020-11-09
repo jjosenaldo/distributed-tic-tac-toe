@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "ok",
+  "message" : "Jogada realizada com sucessso.",
+  "content" : null
+}
+----

@@ -75,3 +75,22 @@ o JSON a seguir é retornado pelo servidor:
 .Resposta
 include::target/snippets/gameInfoGameHasNotStartedYet/http-response.adoc[]
 
+== Realizar jogada
+
+Através deste serviço, o jogador pode realizar uma jogada.
+
+A <<tbl:play_ok_request_fields,Tabela 5>> contém os campos que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:play_ok_request_fields]]
+include::target/snippets/playOk/request-fields.adoc[]
+
+No caso deste método, o campo _content_ da resposta do servidor é sempre nulo, independentemente da requisição feita.
+
+Mostram-se, a seguir, um exemplo de requisição válida e sua resposta correspondente:
+
+.Requisição
+include::target/snippets/playOk/http-request.adoc[]
+
+.Resposta
+include::target/snippets/playOk/http-response.adoc[]

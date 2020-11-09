@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+row+`
+|`+Number+`
+|Linha do tabuleiro onde será feita a jogada.
+
+|`+column+`
+|`+Number+`
+|Coluna do tabuleiro onde será feita a jogada.
+
+|`+token+`
+|`+String+`
+|Identificador do jogador que está fazendo a jogada.
+
+|===
