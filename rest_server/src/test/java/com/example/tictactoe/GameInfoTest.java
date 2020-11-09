@@ -16,11 +16,6 @@ import com.example.tictactoe.controllers.GameInfoController;
 import com.example.tictactoe.model.GameInfo;
 import com.example.tictactoe.model.response.InfoResponse;
 import com.example.tictactoe.services.GameInfoService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -37,13 +32,6 @@ public class GameInfoTest {
 
         @MockBean
         private GameInfoService gameInfoService;
-
-        public static String asJsonString(Object object) throws JsonProcessingException {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-                ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
-                return objectWriter.writeValueAsString(object);
-        }
 
         @Test
         public void gameInfoOk() throws Exception {
