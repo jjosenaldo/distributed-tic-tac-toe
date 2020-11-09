@@ -78,8 +78,8 @@ public class Game {
 		else {
 			status = GameStatus.Status.RUNNING;
 			isYourTurn = you.getName().equals(currPlayerName);
-			board = this.board.toJSONMatrix();
 		}
+		board = this.board.toJSONMatrix();
 
 		return new GameStatus(status, isYourTurn, board, winCoordinates);
 	}
@@ -111,14 +111,6 @@ public class Game {
 	}
 
 	private boolean isGameRunning(String token) throws TokenDoesNotExistException {
-		if (gameHasStarted())
-			System.out.println("jogo começou");
-		if (board.hasAvailableCells())
-			System.out.println("tem casas livres");
-		if (isWin(token))
-			System.out.println("vc ganhou");
-		if (isLose(token))
-			System.out.println("vc perdeu");
 		return gameHasStarted() && board.hasAvailableCells() && !isWin(token) && !isLose(token);
 	}
 
@@ -248,6 +240,8 @@ public class Game {
 		for (int i = 0; i < 3; i++) {
 			boolean win = true;
 			String label = board.getCell(i, 0);
+			if(label.trim().isEmpty())
+				continue;
 			for (int j = 1; j < 3; j++) {
 				if (!board.getCell(i, j).equals(label)) {
 					win = false;
@@ -273,6 +267,8 @@ public class Game {
 		for (int i = 0; i < 3; i++) {
 			boolean win = true;
 			String label = board.getCell(0, i);
+			if(label.trim().isEmpty())
+				continue;
 			for (int j = 1; j < 3; j++) {
 				if (!board.getCell(j, i).equals(label)) {
 					win = false;
@@ -297,48 +293,51 @@ public class Game {
 		// First Diagonal
 		boolean win = true;
 		String label = board.getCell(0, 0);
-		for (int i = 0; i < 3; i++) {
-			if (!board.getCell(i, i).equals(label)) {
-				win = false;
-				break;
-			}
-		}
-		if (win) {
-			List<List<Integer>> winCoordinates = new ArrayList<>();
-
+		if(!label.trim().isEmpty()) {
 			for (int i = 0; i < 3; i++) {
-				List<Integer> tmp = new ArrayList<>();
-				tmp.add(i);
-				tmp.add(i);
-				winCoordinates.add(tmp);
+				if (!board.getCell(i, i).equals(label)) {
+					win = false;
+					break;
+				}
 			}
+			if (win) {
+				List<List<Integer>> winCoordinates = new ArrayList<>();
 
-			return winCoordinates;
+				for (int i = 0; i < 3; i++) {
+					List<Integer> tmp = new ArrayList<>();
+					tmp.add(i);
+					tmp.add(i);
+					winCoordinates.add(tmp);
+				}
+
+				return winCoordinates;
+			}
 		}
 
 		// Second Diagonal
 		win = true;
 		label = board.getCell(0, 2);
-		for (int i = 1; i < 3; i++) {
-			if (!board.getCell(i, 2 - i).equals(label)) {
-				win = false;
-				break;
+		if(!label.trim().isEmpty()) {
+			for (int i = 1; i < 3; i++) {
+				if (!board.getCell(i, 2 - i).equals(label)) {
+					win = false;
+					break;
+				}
+			}
+			if (win) {
+				List<List<Integer>> winCoordinates = new ArrayList<>();
+
+				for (int i = 0; i < 3; i++) {
+					List<Integer> tmp = new ArrayList<>();
+					tmp.add(i);
+					tmp.add(2 - i);
+					winCoordinates.add(tmp);
+				}
+
+				return winCoordinates;
 			}
 		}
-		if (win) {
-			List<List<Integer>> winCoordinates = new ArrayList<>();
-
-			for (int i = 0; i < 3; i++) {
-				List<Integer> tmp = new ArrayList<>();
-				tmp.add(i);
-				tmp.add(2 - i);
-				winCoordinates.add(tmp);
-			}
-
-			return winCoordinates;
-		}
-
+		
 		return null;
-
 	}
 }

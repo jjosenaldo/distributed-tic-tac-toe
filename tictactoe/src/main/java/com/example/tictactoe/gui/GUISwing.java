@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 import com.example.tictactoe.controller.IClientController;
 import com.example.tictactoe.model.GameInfo;
@@ -36,6 +37,8 @@ public class GUISwing extends JFrame {
     private String token;
     private GameInfo gameInfo;
     
+    // Initializer methods =================================================
+    
     /**
      * Create a homeScreen panel.
      *
@@ -46,7 +49,7 @@ public class GUISwing extends JFrame {
         JPanel panel = new JPanel(new GridBagLayout());
         Insets insets = new Insets(5, 5, 5, 5);
 
-        JLabel label = new JLabel("Enter a username");
+        JLabel label = new JLabel("Escolha um nome de usuário");
         GridBagConstraints lc = new GridBagConstraints();
         lc.gridx = 1;
         lc.gridy = 1;
@@ -163,6 +166,8 @@ public class GUISwing extends JFrame {
         super.setVisible(true);
     }
 
+    // Auxiliary methods ===================================================
+    
     /**
      * Update the screen to the passed parameter.
      *
@@ -175,89 +180,33 @@ public class GUISwing extends JFrame {
         this.repaint();
     }
 
-    /**
-     * This method is called when the user enter its username in GUI.
-     *
-     * @param username The chosen username.
-     */
-    private void enterUsername(String username) {
-        updateScreen(loadingScreen);
-        
-        try {
-        	// Tenta registrar o username
-			token = controller.register(username);
-			
-	        // Espera o jogo começar
-			new Thread() {
-				@Override
-				public void run() {
-					waitGameStart();
-					waitYourTurn();
-				}
-			}.run();
-		} catch (ErrorException e) {
-			// Alerta o usuário do erro
-			JOptionPane.showMessageDialog(this,
-				    e.getMessage(),
-				    "Erro de autenticação",
-				    JOptionPane.ERROR_MESSAGE);
-
-			// Volta para a tela principal
-			updateScreen(homeScreen);
-		}
+    private void showMessageError(String title, String message) {
+    	JOptionPane.showMessageDialog(this,
+			    message,
+			    title,
+			    JOptionPane.ERROR_MESSAGE);
     }
 
-    /**
-     * This method is called when the user click on a board cell.
-     *
-     * @param row Cell's row.
-     * @param col Cell's column.
-     */
-    private void play(int row, int col) {
-        if (board[row][col].getText().isEmpty()) {
-        	try {
-				controller.play(row, col, token);
-	            drawPlay(row, col, gameInfo.getYourLabel());
-	            setTurnUsername(gameInfo.getOpponentName());
-	            showGameScreen(true);
-	            
-	            // Espera sua vez
-	            new Thread() {
-	            	@Override
-	            	public void run() {
-	            		waitYourTurn();
-	            	}
-	            }.run();
-			} catch (ErrorException e) {
-				// Alerta o usuário do erro
-				JOptionPane.showMessageDialog(this,
-					    e.getMessage(),
-					    "Jogada inválida",
-					    JOptionPane.ERROR_MESSAGE);
-			}
-        }
+    private void setYourTurn(boolean yourTurn) {
+    	// Set player name as turn label
+    	if(yourTurn)
+    		this.turnUsername.setText("Sua vez");
+    	else
+    		this.turnUsername.setText("Vez de " +  gameInfo.getOpponentName());
+    	
+    	// If its your turn, unlock game screen; otherwise lock game screen
+    	for (int i = 0; i < 3; i++)
+    		for (int j = 0; j < 3; j++)
+    			board[i][j].setEnabled(yourTurn);
     }
     
-    private void drawPlay(int row, int col, String label) {
-        board[row][col].setText(label);
-    }
-    
-    /**
-     * Set the username in gameScreen.
-     *
-     * @param username The username to be set.
-     */
-    private void setTurnUsername(String username) {
-        this.turnUsername.setText(username + "'s turn");
-    }
-
     private void showGameScreen(boolean blocked) {
     	for (int i = 0; i < 3; i++)
     		for (int j = 0; j < 3; j++)
     			board[i][j].setEnabled(!blocked);
     	updateScreen(gameScreen);
     }
-
+    
     private void finishGameWithWin(List<List<Integer>> winCoordinates) {
         for(int i = 0; i < 3; i++) {
         	int row = winCoordinates.get(i).get(0);
@@ -272,7 +221,7 @@ public class GUISwing extends JFrame {
         
         showGameScreen(true);
     }
-
+    
     private void finishGameWithDraw() {
     	this.turnUsername.setText("DRAW");
         this.turnUsername.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -280,7 +229,7 @@ public class GUISwing extends JFrame {
 
         showGameScreen(true);
     }
-
+    
     private void finishGameWithLoss(List<List<Integer>> winCoordinates) {
     	for(int i = 0; i < 3; i++) {
         	int row = winCoordinates.get(i).get(0);
@@ -296,78 +245,161 @@ public class GUISwing extends JFrame {
         showGameScreen(true);
     }
     
-    private void waitGameStart() {
-    	boolean started = false;
-    	do {
-    		try {
-				GameStatus status = controller.status(token);
-				if(status.getStatus().equals(GameStatus.Status.RUNNING)) {
-					startGame(status.getBoard());
-					started = true;
-				}
-				Thread.sleep(1000);
-			} catch (ErrorException e) {
-				JOptionPane.showMessageDialog(this,
-					    e.getMessage(),
-					    "Erro ao recuperar o status do jogo!",
-					    JOptionPane.ERROR_MESSAGE);
-				System.exit(-1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			}
-    	} while(started);
+    private void updateGame(GameStatus status) {    	
+    	// Update board
+    	if(status.getBoard() != null)
+	    	for(int i = 0; i < 3; i++)
+	    		for(int j = 0; j < 3; j++)
+	    			this.board[i][j].setText(status.getBoard().get(i).get(j).trim());
+    	
+    	// Check game status
+    	if(status.getStatus().equals(GameStatus.Status.WIN))
+    		this.finishGameWithWin(status.getWinCoordinates());
+    	else if(status.getStatus().equals(GameStatus.Status.LOSE))
+    		this.finishGameWithLoss(status.getWinCoordinates());
+    	else if(status.getStatus().equals(GameStatus.Status.DRAW))
+    		this.finishGameWithDraw();
+    	else if(status.getStatus().equals(GameStatus.Status.RUNNING))
+    		this.setYourTurn(status.getYourTurn());
+    	
+    	updateScreen(gameScreen);
     }
     
-    private void startGame(List<List<String>> initialBoard) {
+    private void startGame(GameStatus status) {
     	try {
-			gameInfo = controller.info(token);
-			setBoard(initialBoard);
-			setTurnUsername(gameInfo.getInitialPlayerName());
-			showGameScreen(gameInfo.getInitialPlayerName().equals(gameInfo.getYourName()));
+    		// Save initial game information
+			this.gameInfo = controller.info(token);
+			
+			// Update game
+			updateGame(status);
+			
+			// Wait your turn
+			// Wait your turn
+            new SwingWorker<Void, Object>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+					waitYourTurn();
+					return null;
+				}
+            }.execute();
 		} catch (ErrorException e) {
-			e.printStackTrace();
+			// Show a message error
+			showMessageError("Erro ao tentar recuperar a informação inicial do jogo", e.getMessage());
 			System.exit(-1);
 		}
     }
     
-    private void setBoard(List<List<String>> board) {
-    	for(int i = 0; i < 3; i++)
-    		for(int j = 0; j < 3; j++)
-    			this.board[i][j].setText(board.get(i).get(j));
-    }
-
-    private void waitYourTurn() {
+    private void waitGameStart() {
     	do {
     		try {
 				GameStatus status = controller.status(token);
-				if(status.getStatus().equals(GameStatus.Status.RUNNING)) {
-					setTurnUsername(gameInfo.getYourName());
-					setBoard(status.getBoard());
-					showGameScreen(!status.getYourTurn());
-					return;
-				} else if(status.getStatus().equals(GameStatus.Status.WIN)) {
-					finishGameWithWin(status.getWinCoordinates());
-					return;
-				} else if(status.getStatus().equals(GameStatus.Status.LOSE)) {
-					finishGameWithLoss(status.getWinCoordinates());
-					return;
-				} else if(status.getStatus().equals(GameStatus.Status.DRAW)) {
-					finishGameWithDraw();
+				if(!status.getStatus().equals(GameStatus.Status.NOT_STARTED)) {
+					startGame(status);
 					return;
 				}
-				
 				Thread.sleep(1000);
 			} catch (ErrorException e) {
-				JOptionPane.showMessageDialog(this,
-					    e.getMessage(),
-					    "Erro ao recuperar o status do jogo!",
-					    JOptionPane.ERROR_MESSAGE);
+				this.showMessageError("Erro ao recuperar o status do jogo", e.getMessage());
 				System.exit(-1);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.showMessageError("A thread foi interrompida", e.getMessage());
 				System.exit(-1);
 			}
     	} while(true);
     }
+    
+    private void waitYourTurn() {
+    	do {
+    		try {
+    			// Get game status
+    			GameStatus status = controller.status(token);
+    			
+    			// Update game
+    			this.updateGame(status);
+    			
+    			// If game is not running or it is your turn, break the loop
+    			if(!status.getStatus().equals(GameStatus.Status.RUNNING) || 
+    					status.getYourTurn())
+    				break;
+    			
+				// Sleep for 1 second
+				Thread.sleep(1000);
+			} catch (ErrorException e) {
+				this.showMessageError("Erro ao recuperar o status do jogo", e.getMessage());
+				System.exit(-1);
+			} catch (InterruptedException e) {
+				this.showMessageError("A thread foi interrompida", e.getMessage());
+				System.exit(-1);
+			}
+    	} while(true);
+    }
+    
+    // GUI methods =========================================================
+    
+    /**
+     * This method is called when the user enter its user name in GUI.
+     *
+     * @param username The chosen user name.
+     */
+    private void enterUsername(String username) {
+        updateScreen(loadingScreen);
+        try {
+        	// Register user name
+			token = controller.register(username);
+			
+			// Wait for game to start
+			new SwingWorker<Void,Object>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+					waitGameStart();
+					return null;
+				}
+			}.execute();
+		} catch (ErrorException e) {
+			// Show message error
+			this.showMessageError("Erro de autenticação.", e.getMessage());
+
+			// Return to home screen
+			updateScreen(homeScreen);
+		}
+    }
+
+    /**
+     * This method is called when the user click on a board cell.
+     *
+     * @param row Cell's row.
+     * @param col Cell's column.
+     */
+    private void play(int row, int col) {
+        if (board[row][col].getText().trim().isEmpty()) {
+        	try {
+        		// Play 
+				controller.play(row, col, token);
+				
+				// TODO: Decide if remove it 
+//	            drawPlay(row, col, gameInfo.getYourLabel());
+//	            
+//	            // Set the turn for the opponent
+//	            setYourTurn(false);
+	            
+	            // Update screen // TODO: Check if it can be removed
+//	            updateScreen(gameScreen); 
+	            
+	            // Wait your turn
+	            new SwingWorker<Void, Object>() {
+					@Override
+					protected Void doInBackground() throws Exception {
+						waitYourTurn();
+						return null;
+					}
+	            }.execute();
+			} catch (ErrorException e) {
+				// Show a message error
+				showMessageError("Jogada inválida", e.getMessage());
+			}
+        }
+    }
+    
+    
+    
 }
