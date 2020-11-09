@@ -35,65 +35,81 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(GameInfoController.class)
 @AutoConfigureRestDocs(outputDir = "src/main/asciidoc/target/snippets")
 public class GameInfoTest {
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private GameInfoService gameInfoService;
+        @MockBean
+        private GameInfoService gameInfoService;
 
-    // @MockBean
-    // private PlayersService playersService;
+        // @MockBean
+        // private PlayersService playersService;
 
-    public static String asJsonString(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
-        return objectWriter.writeValueAsString(object);
-    }
+        public static String asJsonString(Object object) throws JsonProcessingException {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+                ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
+                return objectWriter.writeValueAsString(object);
+        }
 
-    // @BeforeAll
-    // public void registerPlayers() {
-    // when(playersService.register("jose")).thenReturn(RegistrationResponse.ok("0"));
-    // when(playersService.register("gil")).thenReturn(RegistrationResponse.ok("1"));
+        // @BeforeAll
+        // public void registerPlayers() {
+        // when(playersService.register("jose")).thenReturn(RegistrationResponse.ok("0"));
+        // when(playersService.register("gil")).thenReturn(RegistrationResponse.ok("1"));
 
-    // playersService.register("jose");
-    // playersService.register("gil");
-    // }
+        // playersService.register("jose");
+        // playersService.register("gil");
+        // }
 
-    @Test
-    public void gameInfoOk() throws Exception {
-        GameInfo mockGameInfo = new GameInfo("jose", "gil", "O", "X", "jose");
-        String token = "0";
+        @Test
+        public void gameInfoOk() throws Exception {
+                GameInfo mockGameInfo = new GameInfo("jose", "gil", "O", "X", "jose");
+                String token = "0";
 
-        when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.ok(mockGameInfo));
+                when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.ok(mockGameInfo));
 
-        this.mockMvc
-                .perform(get("/info").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("token", token))
-                .andExpect(status().isOk())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        requestParameters(parameterWithName("token").description("Identificador do jogador.")),
+                this.mockMvc.perform(get("/info").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).param("token", token)).andExpect(status().isOk())
+                                .andDo(document("{methodName}", preprocessRequest(prettyPrint()),
+                                                preprocessResponse(prettyPrint()),
+                                                requestParameters(parameterWithName("token")
+                                                                .description("Identificador do jogador.")),
 
-                        relaxedResponseFields(fieldWithPath("content.opponentName").description("Nome do oponente."),
-                                fieldWithPath("content.opponentName").description("Nome do oponente."),
-                                fieldWithPath("content.opponentLabel")
-                                        .description("Marcador do oponente no tabuleiro."),
-                                fieldWithPath("content.yourName").description("Nome deste jogador."),
-                                fieldWithPath("content.yourLabel").description("Marcador deste jogador no tabuleiro."),
-                                fieldWithPath("content.initialPlayerName")
-                                        .description("Nome do jogador que vai jogar primeiro."))));
-    }
+                                                relaxedResponseFields(
+                                                                fieldWithPath("content.opponentName")
+                                                                                .description("Nome do oponente."),
+                                                                fieldWithPath("content.opponentName")
+                                                                                .description("Nome do oponente."),
+                                                                fieldWithPath("content.opponentLabel").description(
+                                                                                "Marcador do oponente no tabuleiro."),
+                                                                fieldWithPath("content.yourName")
+                                                                                .description("Nome deste jogador."),
+                                                                fieldWithPath("content.yourLabel").description(
+                                                                                "Marcador deste jogador no tabuleiro."),
+                                                                fieldWithPath("content.initialPlayerName").description(
+                                                                                "Nome do jogador que vai jogar primeiro."))));
+        }
 
-    @Test
-    public void gameInfoTokenIsInvalid() throws Exception {
-        String token = "2";
+        @Test
+        public void gameInfoTokenIsInvalid() throws Exception {
+                String token = "2";
 
-        when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.tokenIsInvalid());
+                when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.tokenIsInvalid());
 
-        this.mockMvc
-                .perform(get("/info").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("token", token))
-                .andExpect(status().isUnauthorized())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(get("/info").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).param("token", token))
+                                .andExpect(status().isUnauthorized()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
+
+        @Test
+        public void gameInfoGameHasNotStartedYet() throws Exception {
+                String token = "0";
+
+                when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.gameHasNotStartedYet());
+
+                this.mockMvc.perform(get("/info").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).param("token", token))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 }

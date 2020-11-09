@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/info?token=0' -i -X GET \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json'
+----

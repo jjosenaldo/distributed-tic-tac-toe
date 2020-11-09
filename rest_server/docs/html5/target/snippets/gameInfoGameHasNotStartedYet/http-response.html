@@ -431,9 +431,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>{
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Content-Length: 88
+
+{
   "status" : "erro",
-  "message" : "Não há vagas disponíveis.",
+  "message" : "O jogo ainda não começou.",
   "content" : null
 }</code></pre>
 </div>
@@ -441,7 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-09 19:41:35 BRT
+Last updated 2020-11-09 19:42:01 BRT
 </div>
 </div>
 </body>

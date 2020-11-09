@@ -68,3 +68,10 @@ Caso o jogador forneça um identificador inválido, o servidor devolve o seguint
 
 .Resposta
 include::target/snippets/gameInfoTokenIsInvalid/http-response.adoc[]
+
+Finalmente, no caso de o identificador ser válido mas apenas um jogador ter se conectado,
+o JSON a seguir é retornado pelo servidor:
+
+.Resposta
+include::target/snippets/gameInfoGameHasNotStartedYet/http-response.adoc[]
+

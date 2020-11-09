@@ -691,12 +691,30 @@ Content-Length: 92
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Finalmente, no caso de o identificador ser válido mas apenas um jogador ter se conectado,
+o JSON a seguir é retornado pelo servidor:</p>
+</div>
+<div class="listingblock">
+<div class="title">Resposta</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Content-Length: 88
+
+{
+  "status" : "erro",
+  "message" : "O jogo ainda não começou.",
+  "content" : null
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-09 19:38:46 BRT
+Last updated 2020-11-09 19:41:47 BRT
 </div>
 </div>
 </body>
