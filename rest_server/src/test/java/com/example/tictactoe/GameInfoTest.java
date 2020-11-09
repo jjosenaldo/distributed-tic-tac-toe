@@ -83,4 +83,17 @@ public class GameInfoTest {
                                 fieldWithPath("content.initialPlayerName")
                                         .description("Nome do jogador que vai jogar primeiro."))));
     }
+
+    @Test
+    public void gameInfoTokenIsInvalid() throws Exception {
+        String token = "2";
+
+        when(gameInfoService.getGameInfo(token)).thenReturn(InfoResponse.tokenIsInvalid());
+
+        this.mockMvc
+                .perform(get("/info").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                        .param("token", token))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+    }
 }

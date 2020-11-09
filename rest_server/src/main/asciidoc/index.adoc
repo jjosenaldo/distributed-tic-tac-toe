@@ -63,3 +63,8 @@ include::target/snippets/gameInfoOk/http-request.adoc[]
 
 .Resposta
 include::target/snippets/gameInfoOk/http-response.adoc[]
+
+Caso o jogador forneça um identificador inválido, o servidor devolve o seguinte JSON:
+
+.Resposta
+include::target/snippets/gameInfoTokenIsInvalid/http-response.adoc[]
