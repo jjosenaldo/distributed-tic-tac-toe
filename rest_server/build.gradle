@@ -13,6 +13,7 @@ asciidoctor {
 	sourceDir 'src/main/asciidoc'
 	attributes \
 		'snippets': file('target/snippets')
+	outputDir 'docs/'
 }
 
 repositories {
