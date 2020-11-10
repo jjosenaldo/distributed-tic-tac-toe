@@ -7,3 +7,11 @@ server/target/
 client/target/
 /tictactoe_server/target/
 /tictactoe_client/target/
+
+# Eclipse files
+tictactoe_client/.classpath
+tictactoe_client/.project
+tictactoe_server/.classpath
+tictactoe_server/.project
+tictactoe_client/bin/
+tictactoe_server/bin/

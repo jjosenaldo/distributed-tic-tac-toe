@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "erro",
+  "message" : "O jogo já acabou.",
+  "content" : null
+}
+----

@@ -3,31 +3,33 @@ package model;
 import java.io.Serializable;
 
 public class GameStartInfo implements Serializable {
-    private final String otherPlayerLabel;
+    /** Generated serial version id */
+	private static final long serialVersionUID = -6920475495146844207L;
+	private final String otherPlayerLabel;
     private final String otherPlayerUsername;
     private final boolean youStart;
     private final String yourLabel;
-    
-    public GameStartInfo(String yourLabel, boolean youStart, String otherPlayerUsername, String otherPlayerLabel){
+
+    public GameStartInfo(String yourLabel, boolean youStart, String otherPlayerUsername, String otherPlayerLabel) {
         this.yourLabel = yourLabel;
         this.youStart = youStart;
         this.otherPlayerUsername = otherPlayerUsername;
         this.otherPlayerLabel = otherPlayerLabel;
     }
-    
-    boolean youStart(){
+
+    public boolean youStart() {
         return youStart;
     }
-    
-    String getYourLabel(){
+
+    public String getYourLabel() {
         return yourLabel;
     }
-    
-    String getOtherPlayerLabel(){
+
+    public String getOtherPlayerLabel() {
         return otherPlayerLabel;
     }
-    
-    String getOtherPlayerUsername(){
+
+    public String getOtherPlayerUsername() {
         return otherPlayerUsername;
     }
 }

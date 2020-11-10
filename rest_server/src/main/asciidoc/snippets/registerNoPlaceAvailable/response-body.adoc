@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "erro",
+  "message" : "Não há vagas disponíveis.",
+  "content" : null
+}
+----

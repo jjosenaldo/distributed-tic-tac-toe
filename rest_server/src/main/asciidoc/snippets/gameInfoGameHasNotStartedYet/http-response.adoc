@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Content-Length: 88
+
+{
+  "status" : "erro",
+  "message" : "O jogo ainda não começou.",
+  "content" : null
+}
+----

@@ -3,29 +3,79 @@ package client;
 import gui.GUI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.GameStartInfo;
 import model.GameStatusAfterPlay;
-import model.TicTacToe;
+import server.ITicTacToeServer;
 
-public class Client extends UnicastRemoteObject implements ITicTacToeClient{    
-    private final GUI gui;
-    
-    public Client(GUI gui) throws RemoteException {
+public class Client extends UnicastRemoteObject implements ITicTacToeClient, IClientController {
+	/** Generated serial version id */
+	private static final long serialVersionUID = 2798766524739872642L;
+	private GUI gui;
+    private final ITicTacToeServer server;
+    private String yourUsername;
+    private String yourLabel;
+    private String otherPlayerUsername;
+    private String otherPlayerLabel;
+    private Integer myId;
+
+    public Client(ITicTacToeServer server) throws RemoteException {
         super();
+        this.server = server;
+    }
+
+    public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
     @Override
-    public void startGame(GameStartInfo info, TicTacToe board) throws RemoteException {
-        gui.showGameHomeScreen(info, board);
+    public void play(int row, int col) {
+        try {
+            server.play(row, col, myId);
+        } catch (RemoteException e) {
+        }
+    }
+
+    public String getYourUsername() {
+        return yourUsername;
+    }
+
+    @Override
+    public String getYourLabel() {
+        return yourLabel;
+    }
+
+    public String getOtherPlayerUsername() {
+        return otherPlayerUsername;
+    }
+
+    public String getOtherPlayerLabel() {
+        return otherPlayerLabel;
+    }
+
+    @Override
+    public void startGame(GameStartInfo info) throws RemoteException {
+        this.yourLabel = info.getYourLabel();
+        this.otherPlayerLabel = info.getOtherPlayerLabel();
+        this.otherPlayerUsername = info.getOtherPlayerUsername();
+
+        if (info.youStart()) {
+            gui.setTurnUsername(yourUsername);
+            gui.showGameScreen(false);
+        } else {
+            gui.setTurnUsername(otherPlayerUsername);
+            gui.showGameScreen(true);
+        }
     }
 
     @Override
     public void otherPlayerPlayed(int row, int col, GameStatusAfterPlay gameStatus, int[][] winCoordinates) throws RemoteException {
-        gui.drawOpponentPlay(row, col);
-        
-        switch(gameStatus){
+        gui.drawPlay(row, col, otherPlayerLabel);
+
+        switch (gameStatus) {
             case RUNNING:
+                gui.setTurnUsername(yourUsername);
                 gui.goToThisPlayerTurn();
                 break;
             case PLAYER_WON:
@@ -36,12 +86,14 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient{
                 break;
             case DRAW:
                 gui.finishGameWithDraw();
+                break;
+            default: /* Nothing */
         }
     }
-    
+
     @Override
-    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates){
-        switch(gameStatus){
+    public void playStatus(GameStatusAfterPlay gameStatus, int[][] winCoordinates) {
+        switch (gameStatus) {
             case INVALID_PLAY:
                 gui.showInvalidPlayScreen();
                 break;
@@ -58,8 +110,24 @@ public class Client extends UnicastRemoteObject implements ITicTacToeClient{
                 gui.finishGameWithDraw();
                 break;
             case RUNNING:
+                gui.setTurnUsername(otherPlayerUsername);
                 gui.waitOtherPlayerTurn();
                 break;
         }
+    }
+
+    @Override
+    public boolean register(String username) {
+        try {
+            Integer id = server.registerClient(this, username);
+            if (id != null) {
+                this.myId = id;
+                this.yourUsername = username;
+                return true;
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

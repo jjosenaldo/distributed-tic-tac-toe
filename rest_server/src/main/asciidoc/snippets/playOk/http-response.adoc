@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 89
+
+{
+  "status" : "ok",
+  "message" : "Jogada realizada com sucessso.",
+  "content" : null
+}
+----

@@ -1,0 +1,14 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 110
+
+{
+  "status" : "ok",
+  "message" : "Usuário registrado com sucesso.",
+  "content" : {
+    "token" : "0"
+  }
+}
+----

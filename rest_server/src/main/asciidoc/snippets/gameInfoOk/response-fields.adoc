@@ -1,0 +1,28 @@
+|===
+|Parâmetro|Tipo|Descrição
+
+|`+content.opponentName+`
+|`+String+`
+|Nome do oponente.
+
+|`+content.opponentName+`
+|`+String+`
+|Nome do oponente.
+
+|`+content.opponentLabel+`
+|`+String+`
+|Marcador do oponente no tabuleiro.
+
+|`+content.yourName+`
+|`+String+`
+|Nome deste jogador.
+
+|`+content.yourLabel+`
+|`+String+`
+|Marcador deste jogador no tabuleiro.
+
+|`+content.initialPlayerName+`
+|`+String+`
+|Nome do jogador que vai jogar primeiro.
+
+|===

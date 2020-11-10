@@ -1,0 +1,12 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+Content-Length: 117
+
+{
+  "status" : "erro",
+  "message" : "Os índices fornecidos estão fora dos limites do campo.",
+  "content" : null
+}
+----

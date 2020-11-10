@@ -1,12 +1,13 @@
 package main;
 
-import client.Client;
-import client.ITicTacToeClient;
-import gui.GUI;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+
+import client.Client;
+import gui.GUI;
+import gui.GUISwing;
 import server.ITicTacToeServer;
 
 public class ClientMain {
@@ -15,8 +16,10 @@ public class ClientMain {
     private static final String OBJECT_NAME = "Server";
     
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException{
-        GUI gui = null;
         ITicTacToeServer server = (ITicTacToeServer) Naming.lookup("rmi://" + ADDRESS + ":" + PORT +"/"+OBJECT_NAME);
-        ITicTacToeClient client = new Client(gui);
+        Client client = new Client(server);
+        GUI gui = new GUISwing(client);
+        client.setGUI(gui);
+        
     }
 }
