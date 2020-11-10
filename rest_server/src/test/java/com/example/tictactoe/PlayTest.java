@@ -57,6 +57,22 @@ public class PlayTest {
                                         .description("Identificador do jogador que está fazendo a jogada."))));
     }
 
+    @Test
+    public void playInvalidToken() throws Exception {
+        int row = 0;
+        int col = 0;
+        String token = "2";
+        PlayInfo playInfo = new PlayInfo(row, col, token);
+
+        when(service.play(row, col, token)).thenReturn(PlayResponse.tokenIsInvalid());
+
+        this.mockMvc
+                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(playInfo)))
+                .andExpect(status().isUnauthorized())
+                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+    }
+
     public static String asJsonString(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);

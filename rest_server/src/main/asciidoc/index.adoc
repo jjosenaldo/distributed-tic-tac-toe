@@ -94,3 +94,8 @@ include::target/snippets/playOk/http-request.adoc[]
 
 .Resposta
 include::target/snippets/playOk/http-response.adoc[]
+
+Quando o identificador informado pelo jogador não é válido, o servidor retorna a resposta a seguir:
+
+.Resposta
+include::target/snippets/playInvalidToken/http-response.adoc[]
