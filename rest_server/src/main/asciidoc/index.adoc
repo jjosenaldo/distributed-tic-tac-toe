@@ -124,3 +124,9 @@ Caso o jogo já tenha acabado, o servidor responde com o seguinte JSON:
 
 .Resposta
 include::target/snippets/playGameOver/http-response.adoc[]
+
+Finalmente, suponha que a posição (0,0) do tabuleiro já esteja ocupada, 
+mas que o jogador tente jogar nela. Nesse caso, o servidor responde com o JSON a seguir:
+
+.Resposta
+include::target/snippets/playCellNotAvailable/http-response.adoc[]
