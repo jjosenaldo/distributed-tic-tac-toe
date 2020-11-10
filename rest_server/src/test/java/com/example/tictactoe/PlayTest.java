@@ -37,18 +37,18 @@ public class PlayTest {
     @MockBean
     private GameService service;
 
+    private final int ROW = 0;
+    private final int COL = 0;
+    private final String TOKEN = "0";
+    private final PlayInfo PLAY_INFO = new PlayInfo(ROW, COL, TOKEN);
+
     @Test
     public void playOk() throws Exception {
-        int row = 0;
-        int col = 1;
-        String token = "0";
-        PlayInfo playInfo = new PlayInfo(row, col, token);
-
-        when(service.play(row, col, token)).thenReturn(PlayResponse.ok());
+        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.ok());
 
         this.mockMvc
                 .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(playInfo)))
+                        .content(asJsonString(PLAY_INFO)))
                 .andExpect(status().isOk())
                 .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(fieldWithPath("row").description("Linha do tabuleiro onde será feita a jogada."),
@@ -59,17 +59,23 @@ public class PlayTest {
 
     @Test
     public void playInvalidToken() throws Exception {
-        int row = 0;
-        int col = 0;
-        String token = "2";
-        PlayInfo playInfo = new PlayInfo(row, col, token);
-
-        when(service.play(row, col, token)).thenReturn(PlayResponse.tokenIsInvalid());
+        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.tokenIsInvalid());
 
         this.mockMvc
                 .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(playInfo)))
+                        .content(asJsonString(PLAY_INFO)))
                 .andExpect(status().isUnauthorized())
+                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+    }
+
+    @Test
+    public void playGameHasNotStartedYet() throws Exception {
+        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.gameHasNotStartedYet());
+
+        this.mockMvc
+                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(PLAY_INFO)))
+                .andExpect(status().isForbidden())
                 .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
     }
 

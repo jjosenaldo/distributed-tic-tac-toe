@@ -99,3 +99,8 @@ Quando o identificador informado pelo jogador não é válido, o servidor retorn
 
 .Resposta
 include::target/snippets/playInvalidToken/http-response.adoc[]
+
+Quando o identificador fornecido é válido, mas o jogo ainda não começou, o seguinte JSON é retornado:
+
+.Resposta
+include::target/snippets/playGameHasNotStartedYet/http-response.adoc[]
