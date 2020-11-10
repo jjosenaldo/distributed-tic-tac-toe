@@ -119,3 +119,8 @@ Nessa situação, o servidor retorna o seguinte:
 
 .Resposta
 include::target/snippets/playNotYourTurn/http-response.adoc[]
+
+Caso o jogo já tenha acabado, o servidor responde com o seguinte JSON:
+
+.Resposta
+include::target/snippets/playGameOver/http-response.adoc[]
