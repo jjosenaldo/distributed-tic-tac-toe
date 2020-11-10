@@ -28,106 +28,102 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(PlayController.class)
-@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/target/snippets")
+@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/snippets")
 public class PlayTest {
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private GameService service;
+        @MockBean
+        private GameService service;
 
-    private final int ROW = 0;
-    private final int COL = 0;
-    private final String TOKEN = "0";
-    private final PlayInfo PLAY_INFO = new PlayInfo(ROW, COL, TOKEN);
+        private final int ROW = 0;
+        private final int COL = 0;
+        private final String TOKEN = "0";
+        private final PlayInfo PLAY_INFO = new PlayInfo(ROW, COL, TOKEN);
 
-    @Test
-    public void playOk() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.ok());
+        @Test
+        public void playOk() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.ok());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isOk())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                        requestFields(fieldWithPath("row").description("Linha do tabuleiro onde será feita a jogada."),
-                                fieldWithPath("column").description("Coluna do tabuleiro onde será feita a jogada."),
-                                fieldWithPath("token")
-                                        .description("Identificador do jogador que está fazendo a jogada."))));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isOk())
+                                .andDo(document("{methodName}", preprocessRequest(prettyPrint()),
+                                                preprocessResponse(prettyPrint()),
+                                                requestFields(fieldWithPath("row").description(
+                                                                "Linha do tabuleiro onde será feita a jogada."),
+                                                                fieldWithPath("column").description(
+                                                                                "Coluna do tabuleiro onde será feita a jogada."),
+                                                                fieldWithPath("token").description(
+                                                                                "Identificador do jogador que está fazendo a jogada."))));
+        }
 
-    @Test
-    public void playInvalidToken() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.tokenIsInvalid());
+        @Test
+        public void playInvalidToken() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.tokenIsInvalid());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isUnauthorized())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isUnauthorized()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    @Test
-    public void playGameHasNotStartedYet() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.gameHasNotStartedYet());
+        @Test
+        public void playGameHasNotStartedYet() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.gameHasNotStartedYet());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isForbidden())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    @Test
-    public void playIndicesOutOfBounds() throws Exception {
-        int outOfBoundsRow = 3;
-        PlayInfo outOfBoundsPlayInfo = new PlayInfo(outOfBoundsRow, COL, TOKEN);
-        when(service.play(outOfBoundsRow, COL, TOKEN)).thenReturn(PlayResponse.indicesAreOutOfBounds());
+        @Test
+        public void playIndicesOutOfBounds() throws Exception {
+                int outOfBoundsRow = 3;
+                PlayInfo outOfBoundsPlayInfo = new PlayInfo(outOfBoundsRow, COL, TOKEN);
+                when(service.play(outOfBoundsRow, COL, TOKEN)).thenReturn(PlayResponse.indicesAreOutOfBounds());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(outOfBoundsPlayInfo)))
-                .andExpect(status().isForbidden())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(outOfBoundsPlayInfo)))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    @Test
-    public void playNotYourTurn() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.notYourTurn());
+        @Test
+        public void playNotYourTurn() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.notYourTurn());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isForbidden())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    @Test
-    public void playGameOver() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.gameIsOver());
+        @Test
+        public void playGameOver() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.gameIsOver());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isForbidden())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    @Test
-    public void playCellNotAvailable() throws Exception {
-        when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.cellNotAvailable());
+        @Test
+        public void playCellNotAvailable() throws Exception {
+                when(service.play(ROW, COL, TOKEN)).thenReturn(PlayResponse.cellNotAvailable());
 
-        this.mockMvc
-                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(PLAY_INFO)))
-                .andExpect(status().isForbidden())
-                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
-    }
+                this.mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON).content(asJsonString(PLAY_INFO)))
+                                .andExpect(status().isForbidden()).andDo(document("{methodName}",
+                                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+        }
 
-    public static String asJsonString(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
-        return objectWriter.writeValueAsString(object);
-    }
+        public static String asJsonString(Object object) throws JsonProcessingException {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+                ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
+                return objectWriter.writeValueAsString(object);
+        }
 }

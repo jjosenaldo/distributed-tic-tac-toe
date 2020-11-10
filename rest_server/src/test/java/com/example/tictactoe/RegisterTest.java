@@ -30,7 +30,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 
 @WebMvcTest(RegisterController.class)
-@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/target/snippets")
+@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/snippets")
 public class RegisterTest {
     @Autowired
     private MockMvc mockMvc;

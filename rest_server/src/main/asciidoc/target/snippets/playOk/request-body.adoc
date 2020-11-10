@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "row" : 0,
-  "column" : 1,
-  "token" : "0"
-}
-----

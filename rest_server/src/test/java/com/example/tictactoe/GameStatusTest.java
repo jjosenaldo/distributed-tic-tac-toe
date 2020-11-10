@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(GameStatusController.class)
-@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/target/snippets")
+@AutoConfigureRestDocs(outputDir = "src/main/asciidoc/snippets")
 public class GameStatusTest {
     @Autowired
     private MockMvc mockMvc;
