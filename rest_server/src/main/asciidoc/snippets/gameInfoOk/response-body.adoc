@@ -1,0 +1,14 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "ok",
+  "message" : "Sucesso.",
+  "content" : {
+    "opponentName" : "jose",
+    "opponentLabel" : "gil",
+    "yourName" : "O",
+    "yourLabel" : "X",
+    "initialPlayerName" : "jose"
+  }
+}
+----

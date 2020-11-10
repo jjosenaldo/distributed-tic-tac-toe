@@ -1,0 +1,193 @@
+:toc: left
+:toclevels: 3     
+:toc-title: Índice  
+:sectnums:      
+:table-caption: Tabela                                      
+
+= Documentação dos Serviços Web do Servidor
+
+Cada uma das seções a seguir corresponde a um dos quatro serviços web ofertados pelo servidor.
+
+== Cadastrar jogador
+
+Por meio deste serviço, um usuário cadastra-se para participar do jogo.
+
+=== Interface
+
+A <<tbl:register_ok_request_fields,Tabela 1>> contém os campos que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:register_ok_request_fields]]
+include::snippets/registerOk/request-fields.adoc[]
+
+Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo _content_ são mostrados na <<tbl:register_ok_response_fields,Tabela 2>>.
+
+.Atributos do campo *content* na resposta.
+[[tbl:register_ok_response_fields]]
+include::snippets/registerOk/response-fields.adoc[]
+
+=== Exemplo de requisição válida
+
+A seguir, são mostrados exemplos de uma requisição válida e de sua resposta.
+
+.Requisição
+include::snippets/registerOk/http-request.adoc[]
+
+.Resposta
+include::snippets/registerOk/http-response.adoc[]
+
+=== Requisições inválidas
+
+Quando o jogador tenta se regitrar com um nome já utilizado, o servidor retorna a seguinte resposta: 
+
+.Resposta
+include::snippets/registerNameAlreadyUsed/http-response.adoc[]
+
+Finalmente, no caso de um jogador tentar se conectar quando dois outros já o fizeram, a seguinte resposta
+é retornada:
+
+.Resposta
+include::snippets/registerNoPlaceAvailable/http-response.adoc[]
+
+[[sec:game_info]]
+== Obter informações iniciais do jogo
+
+Após se cadastrar, por meio deste serviço o jogador obtém informações do jogo, como nomes e marcadores dos jogadores.
+Tais informações não mudam no decorrer do jogo.
+
+=== Interface
+
+A <<tbl:game_info_ok_request_fields,Tabela 3>> contém os parâmetros que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:game_info_ok_request_fields]]
+include::snippets/gameInfoOk/request-parameters.adoc[]
+
+Os atributos do campo _content_ da resposta do servidor são mostrados na <<tbl:game_info_ok_response_fields,Tabela 4>>.
+
+.Atributos do campo *content* na resposta.
+[[tbl:game_info_ok_response_fields]]
+include::snippets/gameInfoOk/response-fields.adoc[]
+
+=== Exemplo de requisição válida
+
+A seguir, são mostrados um exemplo de requisição válida e a resposta do servidor.
+
+.Requisição
+include::snippets/gameInfoOk/http-request.adoc[]
+
+.Resposta
+include::snippets/gameInfoOk/http-response.adoc[]
+
+=== Requisições inválidas
+
+Caso o jogador forneça um identificador inválido, o servidor devolve o seguinte JSON:
+
+.Resposta
+include::snippets/gameInfoTokenIsInvalid/http-response.adoc[]
+
+Finalmente, no caso de o identificador ser válido mas apenas um jogador ter se conectado,
+o JSON a seguir é retornado pelo servidor:
+
+.Resposta
+include::snippets/gameInfoGameHasNotStartedYet/http-response.adoc[]
+
+== Realizar jogada
+
+Através deste serviço, o jogador pode realizar uma jogada.
+
+=== Interface
+
+A <<tbl:play_ok_request_fields,Tabela 5>> contém os campos que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:play_ok_request_fields]]
+include::snippets/playOk/request-fields.adoc[]
+
+No caso deste método, o campo _content_ da resposta do servidor é sempre nulo, independentemente da requisição feita.
+
+=== Exemplo de requisição válida
+
+Mostram-se, a seguir, um exemplo de requisição válida e sua resposta correspondente:
+
+.Requisição
+include::snippets/playOk/http-request.adoc[]
+
+.Resposta
+include::snippets/playOk/http-response.adoc[]
+
+=== Requisições inválidas
+
+// Quando o identificador informado pelo jogador não é válido, o servidor retorna a resposta a seguir:
+
+// .Resposta
+// include::snippets/playInvalidToken/http-response.adoc[]
+
+// Quando o identificador fornecido é válido, mas o jogo ainda não começou, o seguinte JSON é retornado:
+
+// .Resposta
+// include::snippets/playGameHasNotStartedYet/http-response.adoc[]
+
+Uma situação de erro é quando o jogador tenta jogar numa posição fora dos limites do tabuleiro. 
+Constam, a seguir, um exemplo de uma requisição desse tipo e da resposta do servidor.
+
+.Requisição
+include::snippets/playIndicesOutOfBounds/http-request.adoc[]
+
+.Resposta
+include::snippets/playIndicesOutOfBounds/http-response.adoc[]
+
+Há, ainda, o caso de a jogada ser válida, mas o jogador não estar em sua vez. 
+Nessa situação, o servidor retorna o seguinte:
+
+.Resposta
+include::snippets/playNotYourTurn/http-response.adoc[]
+
+Caso o jogo já tenha acabado, o servidor responde com o seguinte JSON:
+
+.Resposta
+include::snippets/playGameOver/http-response.adoc[]
+
+Suponha que a posição (0,0) do tabuleiro já esteja ocupada, 
+mas que o jogador tente jogar nela. Nesse caso, o servidor responde com o JSON a seguir:
+
+.Resposta
+include::snippets/playCellNotAvailable/http-response.adoc[]
+
+Finalmente, caso o identificador passado seja inválido, ou o jogo ainda não tenha começado,
+o servidor retorna os mesmos JSONs mencionados na <<sec:game_info, Seção 2>>.
+
+== Obter estado do jogo
+
+Este método dá ao usuário informações sobre o estado do jogo, tais como se um dado jogador venceu
+e a disposição atual do tabuleiro.
+
+=== Interface
+
+A <<tbl:game_status_ok_request_fields,Tabela 5>> contém os parâmetros que devem ser utilizados no corpo da requisição.
+
+.Parâmetros do corpo da requisição.
+[[tbl:game_status_ok_request_fields]]
+include::snippets/gameStatusOk/request-parameters.adoc[]
+
+Os atributos do campo _content_ da resposta do servidor são mostrados na <<tbl:game_status_ok_response_fields,Tabela 6>>.
+
+.Atributos do campo *content* na resposta.
+[[tbl:game_status_ok_response_fields]]
+include::snippets/gameStatusOk/response-fields.adoc[]
+
+=== Exemplo de requisição válida
+
+A seguir, são mostrados um exemplo de requisição válida e sua resposta correspondente. Pressupõe-se
+que o jogo acabou e que o jogador fazendo a requisição é aquele que venceu.
+
+.Requisição
+include::snippets/gameStatusOk/http-request.adoc[]
+
+.Resposta
+include::snippets/gameStatusOk/http-response.adoc[]
+
+=== Requisições inválidas
+
+As requisições inválidas e suas correspondentes respostas são as mesmas da 
+<<sec:game_info, Seção 2>>.

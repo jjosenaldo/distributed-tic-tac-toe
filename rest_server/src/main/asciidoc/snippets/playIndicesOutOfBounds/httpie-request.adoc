@@ -1,0 +1,10 @@
+[source,bash]
+----
+$ echo '{
+  "row" : 3,
+  "column" : 0,
+  "token" : "0"
+}' | http POST 'http://localhost:8080/play' \
+    'Content-Type:application/json' \
+    'Accept:application/json'
+----

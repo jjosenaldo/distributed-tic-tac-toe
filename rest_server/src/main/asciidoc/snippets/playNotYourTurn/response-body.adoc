@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "erro",
+  "message" : "Não é a sua vez.",
+  "content" : null
+}
+----

@@ -1,0 +1,8 @@
+|===
+|Parâmetro|Tipo|Descrição
+
+|`+name+`
+|`+String+`
+|Nome a ser utilizado pelo jogador.
+
+|===

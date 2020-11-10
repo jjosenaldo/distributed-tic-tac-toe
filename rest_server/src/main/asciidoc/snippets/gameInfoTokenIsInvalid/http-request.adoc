@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+GET /info?token=2 HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Host: localhost:8080
+
+----

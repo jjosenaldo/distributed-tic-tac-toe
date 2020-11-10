@@ -1,0 +1,10 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "ok",
+  "message" : "Usuário registrado com sucesso.",
+  "content" : {
+    "token" : "0"
+  }
+}
+----
