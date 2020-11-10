@@ -113,3 +113,9 @@ include::target/snippets/playIndicesOutOfBounds/http-request.adoc[]
 
 .Resposta
 include::target/snippets/playIndicesOutOfBounds/http-response.adoc[]
+
+Há, ainda, o caso de a jogada ser válida, mas o jogador não estar em sua vez. 
+Nessa situação, o servidor retorna o seguinte:
+
+.Resposta
+include::target/snippets/playNotYourTurn/http-response.adoc[]
