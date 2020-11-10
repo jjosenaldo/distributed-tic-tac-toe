@@ -104,3 +104,12 @@ Quando o identificador fornecido é válido, mas o jogo ainda não começou, o s
 
 .Resposta
 include::target/snippets/playGameHasNotStartedYet/http-response.adoc[]
+
+Outra situação de erro é quando o jogador tenta jogar numa posição fora dos limites do tabuleiro. 
+Constam, a seguir, um exemplo de uma requisição desse tipo e da resposta do servidor.
+
+.Requisição
+include::target/snippets/playIndicesOutOfBounds/http-request.adoc[]
+
+.Resposta
+include::target/snippets/playIndicesOutOfBounds/http-response.adoc[]

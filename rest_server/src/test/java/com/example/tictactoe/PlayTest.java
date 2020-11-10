@@ -79,6 +79,19 @@ public class PlayTest {
                 .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
     }
 
+    @Test
+    public void playIndicesOutOfBounds() throws Exception {
+        int outOfBoundsRow = 3;
+        PlayInfo outOfBoundsPlayInfo = new PlayInfo(outOfBoundsRow, COL, TOKEN);
+        when(service.play(outOfBoundsRow, COL, TOKEN)).thenReturn(PlayResponse.indicesAreOutOfBounds());
+
+        this.mockMvc
+                .perform(post("/play").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(outOfBoundsPlayInfo)))
+                .andExpect(status().isForbidden())
+                .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())));
+    }
+
     public static String asJsonString(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
