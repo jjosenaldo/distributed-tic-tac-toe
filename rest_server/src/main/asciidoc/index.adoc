@@ -6,7 +6,7 @@
 
 == Cadastrar jogador
 
-Por meio deste serviço, um usuário cadastra-se para se participar do jogo.
+Por meio deste serviço, um usuário cadastra-se para participar do jogo.
 
 A <<tbl:register_ok_request_fields,Tabela 1>> contém os campos que devem ser utilizados no corpo da requisição.
 
