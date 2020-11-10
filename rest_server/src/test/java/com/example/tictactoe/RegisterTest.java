@@ -57,8 +57,8 @@ public class RegisterTest {
                 .andExpect(status().isOk())
                 .andDo(document("{methodName}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(fieldWithPath("name").description("Nome a ser utilizado pelo jogador.")),
-                        relaxedResponseFields(
-                                fieldWithPath("content.token").description("Identificador do jogador."))));
+                        relaxedResponseFields(fieldWithPath("content.token").description(
+                                "Identificador do jogador, o qual deve ser usado em requisições futuras."))));
     }
 
     @Test

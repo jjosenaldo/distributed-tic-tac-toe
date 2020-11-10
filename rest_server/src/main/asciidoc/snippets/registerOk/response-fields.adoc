@@ -3,6 +3,6 @@
 
 |`+content.token+`
 |`+String+`
-|Identificador do jogador.
+|Identificador do jogador, o qual deve ser usado em requisições futuras.
 
 |===

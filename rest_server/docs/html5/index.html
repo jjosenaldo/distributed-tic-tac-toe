@@ -463,6 +463,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cada uma das seções a seguir corresponde a um dos quatro serviços web ofertados pelo servidor.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_cadastrar_jogador">1. Cadastrar jogador</h2>
 <div class="sectionbody">
@@ -500,7 +507,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo <em>content</em> são mostrados na <a href="#tbl:register_ok_response_fields">Tabela 2</a>.</p>
 </div>
 <table id="tbl:register_ok_response_fields" class="tableblock frame-all grid-all spread">
-<caption class="title">Table 2. Atributos do campo <em>content</em> na resposta.</caption>
+<caption class="title">Table 2. Atributos do campo <strong>content</strong> na resposta.</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -517,7 +524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.token</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Identificador do jogador.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identificador do jogador, o qual deve ser usado em requisições futuras.</p></td>
 </tr>
 </tbody>
 </table>
@@ -633,7 +640,7 @@ Tais informações não mudam no decorrer do jogo.</p>
 <p>Os atributos do campo <em>content</em> da resposta do servidor são mostrados na <a href="#tbl:game_info_ok_response_fields">Tabela 4</a>.</p>
 </div>
 <table id="tbl:game_info_ok_response_fields" class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Atributos do campo <em>content</em> na resposta.</caption>
+<caption class="title">Table 4. Atributos do campo <strong>content</strong> na resposta.</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -969,7 +976,7 @@ e a disposição atual do tabuleiro.</p>
 <p>Os atributos do campo <em>content</em> da resposta do servidor são mostrados na <a href="#tbl:game_status_ok_response_fields">Tabela 6</a>.</p>
 </div>
 <table id="tbl:game_status_ok_response_fields" class="tableblock frame-all grid-all spread">
-<caption class="title">Table 7. Atributos do campo <em>content</em> na resposta.</caption>
+<caption class="title">Table 7. Atributos do campo <strong>content</strong> na resposta.</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1053,7 +1060,7 @@ Content-Length: 251
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-09 23:24:30 BRT
+Last updated 2020-11-09 23:28:57 BRT
 </div>
 </div>
 </body>

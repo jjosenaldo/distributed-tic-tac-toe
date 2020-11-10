@@ -3,7 +3,9 @@
 :toc-title: Índice  
 :sectnums:                                              
 
-= Documentação dos Serviços Web do Servidor 
+= Documentação dos Serviços Web do Servidor
+
+Cada uma das seções a seguir corresponde a um dos quatro serviços web ofertados pelo servidor.
 
 == Cadastrar jogador
 
@@ -19,7 +21,7 @@ include::snippets/registerOk/request-fields.adoc[]
 
 Quando a requisição é exitosa, o servidor retorna um JSON cujos atributos do campo _content_ são mostrados na <<tbl:register_ok_response_fields,Tabela 2>>.
 
-.Atributos do campo _content_ na resposta.
+.Atributos do campo *content* na resposta.
 [[tbl:register_ok_response_fields]]
 include::snippets/registerOk/response-fields.adoc[]
 
@@ -62,7 +64,7 @@ include::snippets/gameInfoOk/request-parameters.adoc[]
 
 Os atributos do campo _content_ da resposta do servidor são mostrados na <<tbl:game_info_ok_response_fields,Tabela 4>>.
 
-.Atributos do campo _content_ na resposta.
+.Atributos do campo *content* na resposta.
 [[tbl:game_info_ok_response_fields]]
 include::snippets/gameInfoOk/response-fields.adoc[]
 
@@ -169,7 +171,7 @@ include::snippets/gameStatusOk/request-parameters.adoc[]
 
 Os atributos do campo _content_ da resposta do servidor são mostrados na <<tbl:game_status_ok_response_fields,Tabela 6>>.
 
-.Atributos do campo _content_ na resposta.
+.Atributos do campo *content* na resposta.
 [[tbl:game_status_ok_response_fields]]
 include::snippets/gameStatusOk/response-fields.adoc[]
 
