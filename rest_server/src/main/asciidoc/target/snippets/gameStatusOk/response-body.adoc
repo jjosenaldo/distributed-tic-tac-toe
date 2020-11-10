@@ -1,0 +1,13 @@
+[source,options="nowrap"]
+----
+{
+  "status" : "ok",
+  "message" : "Sucesso.",
+  "content" : {
+    "status" : "executando",
+    "board" : [ [ "O", "X", " " ], [ "O", "X", " " ], [ "O", " ", " " ] ],
+    "winCoordinates" : [ [ 0, 0 ], [ 1, 0 ], [ 2, 0 ] ],
+    "yourTurn" : true
+  }
+}
+----

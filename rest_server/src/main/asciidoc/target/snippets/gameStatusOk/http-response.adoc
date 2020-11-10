@@ -1,0 +1,17 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 251
+
+{
+  "status" : "ok",
+  "message" : "Sucesso.",
+  "content" : {
+    "status" : "executando",
+    "board" : [ [ "O", "X", " " ], [ "O", "X", " " ], [ "O", " ", " " ] ],
+    "winCoordinates" : [ [ 0, 0 ], [ 1, 0 ], [ 2, 0 ] ],
+    "yourTurn" : true
+  }
+}
+----

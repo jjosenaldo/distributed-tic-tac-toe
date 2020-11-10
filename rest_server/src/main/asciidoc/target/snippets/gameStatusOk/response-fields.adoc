@@ -1,0 +1,20 @@
+|===
+|Path|Type|Description
+
+|`+content.status+`
+|`+String+`
+|Estado atual do jogo: não começou, em andamento, empate, derrota ou vitória.
+
+|`+content.yourTurn+`
+|`+Boolean+`
+|Verdadeiro se o jogador está em sua vez, e falso caso contrário.
+
+|`+content.board+`
+|`+Array+`
+|Matriz 3x3 correspondendo ao tabuleiro.
+
+|`+content.winCoordinates+`
+|`+Array+`
+|Coordenadas das 3 posições vencedoras, caso algum jogador tenha vencido.
+
+|===

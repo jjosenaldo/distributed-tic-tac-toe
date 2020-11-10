@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Board {
 	private String[][] board;
-	private final String EMPTY_CELL = " ";
+	public static final String EMPTY_CELL = " ";
 
 	public Board() {
 		board = new String[3][3];
